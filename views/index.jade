@@ -8,10 +8,12 @@ block content
       data-scope='manage_pages,public_profile,publish_pages'
       onlogin="folioFbLogin.checkLoginState()").
     Continue with Facebook
+  
+  #appId(style='display:none')=  settings.env === 'development' ? '858911334219612' : '858854500891962'  
   script.
     window.fbAsyncInit = function() {
       FB.init({
-        appId      : settings.env === 'development' ? '858911334219612' : '858854500891962',
+        appId      : document.getElementById('appId').innerText,
         xfbml      : true,
         version    : 'v2.5'
       });
