@@ -1,9 +1,16 @@
 var express = require('express');
+var FB = require('fb');
 var router = express.Router();
 
-/* GET home page. */
+/* GET Login page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'Home' });
+});
+
+/* Sets up FB API with access token and redirects to /pages. */
+router.post('/', function(req, res, next) {
+  FB.setAccessToken(req.body.token);
+  res.redirect('/pages');
 });
 
 module.exports = router;
