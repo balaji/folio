@@ -5,6 +5,7 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(type='text/javascript', src='/javascripts/builds/bundle.js')
   body
+    #appId(style='display:none')=  settings.env === 'development' ? '858911334219612' : '858854500891962'  
     script.
       (function(d, s, id){
         var js, fjs = d.getElementsByTagName(s)[0];
@@ -13,5 +14,19 @@ html
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
+    
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : document.getElementById('appId').innerText,
+          xfbml      : true,
+          version    : 'v2.5',
+          status     : true,
+          cookie     : true
+        });
+
+        FB.getLoginStatus(function(response) {
+          folioFbLogin.statusChangeCallback(response);
+        });
+      };
       
     block content

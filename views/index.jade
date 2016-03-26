@@ -1,20 +1,6 @@
 extends layout
 
-block content
-  #appId(style='display:none')=  settings.env === 'development' ? '858911334219612' : '858854500891962'  
-  script.
-    window.fbAsyncInit = function() {
-      FB.init({
-        appId      : document.getElementById('appId').innerText,
-        xfbml      : true,
-        version    : 'v2.5'
-      });
-
-      FB.getLoginStatus(function(response) {
-        folioFbLogin.statusChangeCallback(response);
-      });
-    };
-    
+block content      
   h1 Folio
   p Smart management of Facebook pages.
   div(class='fb-login-button'
