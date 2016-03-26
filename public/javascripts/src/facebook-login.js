@@ -15,10 +15,12 @@ exports.statusChangeCallback = function(response) {
 var _statusChangeCallback = function(response) {
   if (response.status === 'connected') {
     // Logged into your app and Facebook.
-    util.post('/', {token: response.authResponse.accessToken});
+    if(!util.readCookie('appState') || util.readCookie('appState') !== 'loggedIn') {
+      util.post('/', {token: response.authResponse.accessToken});
+    }
   } else if (response.status === 'not_authorized') {
-    // The person is logged into Facebook, but not your app.
+    window.location.href = '/';
   } else {
-    // The person is not logged into Facebook
+    window.location.href = '/';
   }
 };
