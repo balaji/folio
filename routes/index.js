@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 
 /* Sets up FB API with access token and redirects to /pages. */
 router.post('/', function(req, res, next) {
-  FB.setAccessToken(req.body.token);
+  req.session.accessToken = req.body.token;  
   res.redirect('/pages');
 });
 

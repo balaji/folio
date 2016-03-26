@@ -1,14 +1,6 @@
 extends layout
 
 block content
-  h1 Folio
-  p Smart management of Facebook pages.
-  div(class='fb-login-button'
-      data-size='large'
-      data-scope='manage_pages,public_profile,publish_pages'
-      onlogin="folioFbLogin.checkLoginState()").
-    Continue with Facebook
-  
   #appId(style='display:none')=  settings.env === 'development' ? '858911334219612' : '858854500891962'  
   script.
     window.fbAsyncInit = function() {
@@ -22,3 +14,11 @@ block content
         folioFbLogin.statusChangeCallback(response);
       });
     };
+    
+  h1 Folio
+  p Smart management of Facebook pages.
+  div(class='fb-login-button'
+      data-size='large'
+      data-scope='manage_pages,public_profile,publish_pages'
+      onlogin="folioFbLogin.checkLoginState()").
+    Continue with Facebook
