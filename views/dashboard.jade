@@ -1,13 +1,14 @@
 doctype html
-html(lang='en', ng-app='RDash')
+html(lang='en', ng-app='Folio')
   head
     meta(charset='UTF-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     title Folio - Pages
     // STYLES
-    link(href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css', rel='stylesheet')
-    link(href='//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css', rel='stylesheet')
-    link(rel='stylesheet', type='text/css', href='/stylesheets/rdash.css')
+    link(href='components/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+    link(href='components/font-awesome/css/font-awesome.min.css', rel='stylesheet')
+    link(href='components/rdash-ui/dist/css/rdash.min.css', rel='stylesheet')
+
     // Custom Scripts
     script(type='text/javascript', src='/javascripts/builds/bundle.js')
   body(ng-controller='MasterCtrl')
@@ -20,11 +21,11 @@ html(lang='en', ng-app='RDash')
               | Folio
               span.menu-icon.glyphicon.glyphicon-transfer
           li.sidebar-title
-            span NAVIGATION
-          li.sidebar-list
-            a(href='#')
-              | Dashboard 
-              span.menu-icon.fa.fa-tachometer
+            span PAGES
+          each page in pages
+            li.sidebar-list
+              a(href='#', title=page.name)= trimLeading(page.name, 17)
+                span.menu-icon.fa.fa-tachometer
           li.sidebar-list
             a(href='#/tables')
               | Tables 

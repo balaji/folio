@@ -1,6 +1,5 @@
 var express = require('express');
 var FB = require('fb');
-var filters = require('../lib/filters');
 var config = require('../config');
 var router = express.Router();
 
@@ -28,9 +27,8 @@ router.post('/', function(req, res, next) {
       return;
     }
 
-    var accessToken = data.access_token;
-    var expires = data.expires ? data.expires : 0;
-    req.session.accessToken = accessToken;
+    // var expires = data.expires ? data.expires : 0;
+    req.session.accessToken = data.access_token;
     res.cookie('appState','loggedIn', { maxAge: 900000, httpOnly: false });
     res.redirect('/pages');
   });

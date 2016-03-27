@@ -4,7 +4,7 @@
  */
 
 angular
-    .module('RDash')
+    .module('Folio')
     .directive('rdLoading', rdLoading);
 
 function rdLoading() {

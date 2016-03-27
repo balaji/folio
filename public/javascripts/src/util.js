@@ -1,6 +1,6 @@
 "use strict";
 
-var $ = require('jquery');
+var $ = require('../../components/jquery/dist/jquery.min.js');
 
 exports.post = function(path, parameters) {
   var form = $('<form></form>');

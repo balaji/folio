@@ -9,9 +9,7 @@ var routes = require('./routes/index');
 var pages = require('./routes/pages');
 var session = require('./lib/session');
 var app = express();
-var client = require('redis').createClient(
-  app.get('env') === 'development' ? 'redis://localhost:6379' : process.env.REDIS_URL
-);
+var client = require('redis').createClient(process.env.REDIS_URL);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -68,6 +66,14 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
+
+app.locals.trimLeading = function(val, length) {
+  if(val.length > length) {
+    return val.substring(0, length - 3) + "...";
+  } else {
+    return val;
+  }
+}
 
 
 module.exports = app;

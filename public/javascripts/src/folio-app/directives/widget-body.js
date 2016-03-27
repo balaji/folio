@@ -3,7 +3,7 @@
  */
 
 angular
-    .module('RDash')
+    .module('Folio')
     .directive('rdWidgetBody', rdWidgetBody);
 
 function rdWidgetBody() {
