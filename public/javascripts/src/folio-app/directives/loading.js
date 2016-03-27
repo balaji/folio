@@ -1,16 +1,16 @@
 /**
- * Loading Directive
- * @see http://tobiasahlin.com/spinkit/
- */
+* Loading Directive
+* @see http://tobiasahlin.com/spinkit/
+*/
 
 angular
-    .module('Folio')
-    .directive('rdLoading', rdLoading);
+.module('Folio')
+.directive('rdLoading', rdLoading);
 
 function rdLoading() {
-    var directive = {
-        restrict: 'AE',
-        template: '<div class="loading"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>'
-    };
-    return directive;
+  var directive = {
+    restrict: 'AE',
+    template: '<div class="loading"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>'
+  };
+  return directive;
 };

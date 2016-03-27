@@ -12,10 +12,19 @@ router.get('/', function(req, res, next) {
   }
 });
 
+router.get('/logout', function(req, res, next) {
+  req.session.destroy(function() {
+    req.session = null;
+    res.cookie('appState','loggedOut', { maxAge: 900000, httpOnly: false });
+    res.render('index', { title: 'Home' });
+  });
+});
+
 /* Sets up FB API with access token and redirects to /pages. */
 router.post('/', function(req, res, next) {
   var accessToken = req.body.token;
 
+  //Fetching Long lived token. lives for 60 days.
   FB.api('oauth/access_token', {
     client_id: config.appId,
     client_secret: process.env.APP_SECRET,
@@ -28,7 +37,7 @@ router.post('/', function(req, res, next) {
     }
 
     // var expires = data.expires ? data.expires : 0;
-    req.session.accessToken = data.access_token;
+    req.session.llToken = data.access_token;
     res.cookie('appState','loggedIn', { maxAge: 900000, httpOnly: false });
     res.redirect('/pages');
   });

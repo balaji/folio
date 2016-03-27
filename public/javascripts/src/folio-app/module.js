@@ -14,8 +14,8 @@ function($stateProvider, $urlRouterProvider) {
     url: '/',
     templateUrl: 'templates/dashboard.html'
   })
-  .state('tables', {
-    url: '/tables',
-    templateUrl: 'templates/tables.html'
+  .state('page', {
+    url: '/:page_id',
+    templateUrl: 'templates/page-detail.html'
   });
 }]);

@@ -1,21 +1,21 @@
 /**
- * Alerts Controller
- */
+* Alerts Controller
+*/
 angular
-    .module('Folio')
-    .controller('AlertsCtrl', ['$scope', AlertsCtrl]);
+.module('Folio')
+.controller('AlertsCtrl', ['$scope', AlertsCtrl]);
 
 function AlertsCtrl($scope) {
-    $scope.alerts = [];
+  $scope.alerts = [];
 
-    $scope.addAlert = function(alertType, alertMessage) {
-        $scope.alerts.push({
-            msg: alertMessage,
-            type: alertType
-        });
-    };
+  $scope.addAlert = function(alertType, alertMessage) {
+    $scope.alerts.push({
+      msg: alertMessage,
+      type: alertType
+    });
+  };
 
-    $scope.closeAlert = function(index) {
-        $scope.alerts.splice(index, 1);
-    };
+  $scope.closeAlert = function(index) {
+    $scope.alerts.splice(index, 1);
+  };
 }

@@ -1,3 +1,4 @@
 {
-  "appId": "858911334219612"
+  "appId": "858911334219612",
+  "redirectUri": "http://cave.local:5000"
 }

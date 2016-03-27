@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var pages = require('./routes/pages');
 var session = require('./lib/session');
+require('dotenv').config();
+
 var app = express();
 var client = require('redis').createClient(process.env.REDIS_URL);
 

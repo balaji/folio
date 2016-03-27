@@ -1,5 +1,85 @@
-extends dashboard
-//- 
-//- block content
-//-   each page in pages
-//-     h2= page.name
+doctype html
+html(lang='en', ng-app='Folio')
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    title Folio - Pages
+    // STYLES
+    link(href='/javascripts/components/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
+    link(href='/javascripts/components/font-awesome/css/font-awesome.min.css', rel='stylesheet')
+    link(href='/javascripts/components/rdash-ui/dist/css/rdash.min.css', rel='stylesheet')
+
+    // Custom Scripts
+    script(type='text/javascript', src='https://connect.facebook.net/en_US/sdk.js')
+    script(type='text/javascript', src='/javascripts/builds/bundle.js')
+  body(ng-controller='MasterCtrl')
+    //- input(type='hidden', id='fbCode', name='fbCode', value=code)
+    input(type='hidden', id='appId', name='appId', value=config.appId)
+    input(type='hidden', id='redirectUri', name='redirectUri', value=config.redirectUri)
+    #page-wrapper(ng-class="{'open': toggle}", ng-cloak='')
+      // Sidebar
+      #sidebar-wrapper
+        ul.sidebar
+          li.sidebar-main
+            a(ng-click='toggleSidebar()')
+              | Folio
+              span.menu-icon.glyphicon.glyphicon-transfer
+          li.sidebar-list
+            a(href='#/')
+              | Dashboard
+              span.menu-icon.fa.fa-line-chart              
+          li.sidebar-title
+            span PAGES
+          each page, index in pages
+            li.sidebar-list
+              a(ng-click="loadPage($event)", 
+                data-page-id=page.id, 
+                data-page-token=page.access_token, 
+                title=page.name)= trimLeading(page.name, 17)
+                span.menu-icon.fa.fa-align-justify               
+        .sidebar-footer
+          .col-xs-4
+            a(href='https://github.com/rdash/rdash-angular', target='_blank')
+              | Github
+          .col-xs-4
+            a(href='https://github.com/rdash/rdash-angular/blob/master/README.md', target='_blank')
+              | About
+          .col-xs-4
+            a(href='#')
+              | Support
+      // End Sidebar
+      #content-wrapper
+        .page-content
+          // Header Bar
+          .row.header
+            .col-xs-12
+              .user.pull-right
+                .item.dropdown(uib-dropdown='')
+                  a.dropdown-toggle(href='#', uib-dropdown-toggle='')
+                    img(src="https://graph.facebook.com/" + profile.id + "/picture")
+                  ul.dropdown-menu.dropdown-menu-right
+                    li.dropdown-header= profile.name                      
+                    li.divider
+                    li.link
+                      a(href='/logout')
+                        | Logout
+                .item.dropdown(uib-dropdown='')
+                  a.dropdown-toggle(href='#', uib-dropdown-toggle='')
+                    i.fa.fa-bell-o
+                  ul.dropdown-menu.dropdown-menu-right
+                    li.dropdown-header
+                      | Notifications
+                    li.divider
+                    li
+                      a(href='#') Server Down!
+              .meta
+                .page
+                  | Folio
+                .breadcrumb-links
+                  | Home / Folio
+          // End Header Bar
+          // Main Content
+          div(ui-view='')
+        // End Page Content
+      // End Content Wrapper
+    // End Page Wrapper
