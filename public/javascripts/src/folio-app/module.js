@@ -1,7 +1,7 @@
-require('../../../components/angular/angular.min');
-require('../../../components/angular-bootstrap/ui-bootstrap-tpls.min');
-require('../../../components/angular-cookies/angular-cookies.min');
-require('../../../components/angular-ui-router/release/angular-ui-router.min');
+require('../../components/angular/angular.min');
+require('../../components/angular-bootstrap/ui-bootstrap-tpls.min');
+require('../../components/angular-cookies/angular-cookies.min');
+require('../../components/angular-ui-router/release/angular-ui-router.min');
 
 angular.module('Folio', ['ui.bootstrap', 'ui.router', 'ngCookies'])
 .config(['$stateProvider', '$urlRouterProvider',
