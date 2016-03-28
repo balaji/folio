@@ -16,6 +16,18 @@ function($stateProvider, $urlRouterProvider) {
   })
   .state('page', {
     url: '/:page_id',
+    templateUrl: 'templates/page-summary.html'
+  })
+  .state('page_settings', {
+    url: '/:page_id/settings',
     templateUrl: 'templates/page-detail.html'
+  })
+  .state('edit_post', {
+    url: '/post/:post_id',
+    templateUrl: 'templates/post-detail.html'
+  })
+  .state('new_post', {
+    url: '/:page_id/post/new',
+    templateUrl: 'templates/new-post.html'
   });
 }]);

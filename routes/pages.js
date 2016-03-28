@@ -10,28 +10,13 @@ function hasExpired(response) {
 
 function handleResponse(res, fbResponse, handlerFn) {
   if(hasExpired(fbResponse)) {
-    res.redirect('/pages');
+    res.redirect('/');
   } else {
     handlerFn();
   }
 }
 
 router.get('/', filters.hasAuthToken, function(req, res, next) {
-
-  //using the long lived token, generating a code to sent to client
-  // FB.api('oauth/client_code', {
-  //   client_id: config.appId,
-  //   client_secret: process.env.APP_SECRET,
-  //   redirect_uri: config.redirectUri,
-  //   access_token: req.session.llToken
-  // }, function(data2) {
-  //   if(!data2 || data2.error) {
-  //     console.log(!data2 ? 'error occurred' : data2.error);
-  //     return;
-  //   }
-
-  res.cookie('appState','loggedIn', { maxAge: 900000, httpOnly: false });
-
   FB.setAccessToken(req.session.llToken);
   FB.api('', 'post', {
     batch: [
@@ -41,16 +26,14 @@ router.get('/', filters.hasAuthToken, function(req, res, next) {
       handleResponse(res, batchResponse, function() {
         var response = JSON.parse(batchResponse[0].body);
         var profile = JSON.parse(batchResponse[1].body);
-        console.log(response.data);
+
         res.render('pages', {
           pages: response.data,
           profile: profile,
-          // code: data2.code,
           config: config
         });
       });
     });
-    // });
   });
 
   module.exports = router;

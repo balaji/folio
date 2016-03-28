@@ -36,7 +36,8 @@ function MasterCtrl($scope, $rootScope, $state, facebookService, $cookieStore) {
     var $element = angular.element($event.currentTarget)[0];
     var pageId = $element.attributes['data-page-id'].value;
     var pageAccessToken = $element.attributes['data-page-token'].value;
-    $rootScope.pageAccessToken = pageAccessToken;
+    // $rootScope.pageAccessToken = pageAccessToken;
+    $cookieStore.put('pageAccessToken', pageAccessToken);
     $state.go('page', {page_id: pageId});
   };
 

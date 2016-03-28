@@ -1,0 +1,23 @@
+<div ng-controller="NewPostCtrl">
+<div class="row">
+	<div class="col-lg-6 col-md-12 col-xs-12">
+		<rd-widget>
+      <rd-widget-header title="New Post">
+      </rd-widget-header>
+			<rd-widget-body>
+          <div>
+            <textarea rows="5" name="message" ng-model="post.message" ng-disabled="disableControls" cols="60"></textarea>
+          </div>
+					<div>
+						<input type="file" name="source" fileread="post.source" value="">
+					</div>
+          <div>
+            <input type="checkbox" id="publishPost" ng-model="post.unpublish" ng-disabled="disableControls">
+            <label for="publishPost"> Publish Later</label>
+          </div>
+          <button class="btn btn-xs btn-primary" ng-disabled="disableControls" ng-click="postPost()">Post</button>
+			</rd-widget-body>
+		</rd-widget>
+	</div>
+</div>
+</div>

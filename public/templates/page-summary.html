@@ -1,0 +1,128 @@
+<div ng-controller="PageDetailCtrl">
+	<div class="row">
+		<div class="col-lg-3 col-md-6 col-xs-12">
+			<rd-widget>
+				<rd-widget-body ng-click="newPost()" class="clickable">
+					<div class="widget-icon green pull-left">
+						<i class="fa fa-file-text"></i>
+					</div>
+					<div class="title">Create</div>
+					<div class="comment">New Post</div>
+				</rd-widget-body>
+			</rd-widget>
+		</div>
+		<div class="col-lg-3 col-md-6 col-xs-12">
+			<rd-widget>
+				<rd-widget-body ng-click="settings()" class="clickable">
+					<div class="widget-icon red pull-left">
+						<i class="fa fa-cogs"></i>
+					</div>
+					<div class="title">Settings</div>
+					<div class="comment">Page Details</div>
+				</rd-widget-body>
+			</rd-widget>
+		</div>
+		<div class="col-lg-3 col-md-6 col-xs-12">
+			<rd-widget>
+				<rd-widget-body>
+					<div class="widget-icon orange pull-left">
+						<i class="fa fa-thumbs-up"></i>
+					</div>
+					<div class="title">225</div>
+					<div class="comment">Likes</div>
+				</rd-widget-body>
+			</rd-widget>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-6">
+			<rd-widget>
+				<rd-widget-header title="Unpublished Posts">
+				</rd-widget-header>
+				<rd-widget-body ng-show="!unPublishedPosts">
+					<rd-loading></rd-loading>
+				</rd-widget-body>
+				<rd-widget-body classes="large no-padding" ng-show="unPublishedPosts">
+					<div class="message" ng-show="!unPublishedPosts.length">
+						No Unpublished Posts.
+					</div>
+					<div class="table-responsive" ng-show="unPublishedPosts.length">
+						<table class="table">
+							<tbody>
+								<tr ng-repeat="post in unPublishedPosts">
+									<td style="width:25%">
+										{{post.created_time | date:"MM/dd/yyyy H:mm"}}
+									</td>
+									<td>
+										<a ng-href="#/post/{{post.id}}">{{post.message}}</a>
+									</td>
+									<td style="width:5%">
+										<a ng-href="https://facebook.com/{{post.id}}" target="_blank">
+											<span class="fa fa-external-link"></span>
+										</a>
+									</td>
+									<td style="width:5%">
+										<a ng-click="delete(post.id)" target="_blank">
+											<span class="fa fa-trash"></span>
+										</a>
+									</td>
+									<td style="width:10%">
+										<button class="btn btn-xs btn-info" ng-click="publish(post.id)">Publish</button>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</rd-widget-body>
+			</rd-widget>
+		</div>
+
+		<div class="col-lg-6">
+			<rd-widget>
+				<rd-widget-header title="Published Posts">
+				</rd-widget-header>
+				<rd-widget-body ng-show="!publishedPosts">
+					<rd-loading></rd-loading>
+				</rd-widget-body>
+				<rd-widget-body classes="large no-padding" ng-show="publishedPosts">
+					<div class="message" ng-show="!publishedPosts.length">
+						No Published Posts.
+					</div>
+					<div class="table-responsive" ng-show="publishedPosts.length">
+						<table class="table">
+							<tbody>
+								<tr ng-repeat="post in publishedPosts">
+									<td style="width:25%">
+										{{post.updated_time | date:"MM/dd/yyyy H:mm"}}
+									</td>
+									<td style="width:65%">
+										<a ng-href="#/post/{{post.id}}">{{post.message}}</a>
+									</td>
+									<td style="width:10%">
+										<a ng-href="https://facebook.com/{{post.id}}" target="_blank">
+											<span class="fa fa-external-link"></span>
+										</a>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</rd-widget-body>
+				<!-- <rd-widget-footer>
+        <ul class="pagination pagination-sm pull-right">
+          <li><a href="#">&laquo;</a></li>
+          <li><a href="#">1</a></li>
+          <li><a href="#">2</a></li>
+          <li><a href="#">3</a></li>
+          <li><a href="#">4</a></li>
+          <li><a href="#">5</a></li>
+          <li><a href="#">&raquo;</a></li>
+        </ul>
+        <div class="clearfix"></div>
+      </rd-widget-footer> -->
+			</rd-widget>
+		</div>
+	</div>
+
+</div>

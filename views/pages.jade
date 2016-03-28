@@ -8,14 +8,12 @@ html(lang='en', ng-app='Folio')
     link(href='/javascripts/components/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
     link(href='/javascripts/components/font-awesome/css/font-awesome.min.css', rel='stylesheet')
     link(href='/javascripts/components/rdash-ui/dist/css/rdash.min.css', rel='stylesheet')
+    link(href='/stylesheets/page.css', rel='stylesheet')
 
     // Custom Scripts
     script(type='text/javascript', src='https://connect.facebook.net/en_US/sdk.js')
     script(type='text/javascript', src='/javascripts/builds/bundle.js')
   body(ng-controller='MasterCtrl')
-    //- input(type='hidden', id='fbCode', name='fbCode', value=code)
-    input(type='hidden', id='appId', name='appId', value=config.appId)
-    input(type='hidden', id='redirectUri', name='redirectUri', value=config.redirectUri)
     #page-wrapper(ng-class="{'open': toggle}", ng-cloak='')
       // Sidebar
       #sidebar-wrapper
@@ -31,6 +29,7 @@ html(lang='en', ng-app='Folio')
           li.sidebar-title
             span PAGES
           each page, index in pages
+            input(type='hidden', id=page.id, value=page.name)
             li.sidebar-list
               a(ng-click="loadPage($event)", 
                 data-page-id=page.id, 
@@ -38,13 +37,10 @@ html(lang='en', ng-app='Folio')
                 title=page.name)= trimLeading(page.name, 17)
                 span.menu-icon.fa.fa-align-justify               
         .sidebar-footer
-          .col-xs-4
-            a(href='https://github.com/rdash/rdash-angular', target='_blank')
-              | Github
-          .col-xs-4
+          .col-xs-6
             a(href='https://github.com/rdash/rdash-angular/blob/master/README.md', target='_blank')
               | About
-          .col-xs-4
+          .col-xs-6
             a(href='#')
               | Support
       // End Sidebar
@@ -72,13 +68,18 @@ html(lang='en', ng-app='Folio')
                     li.divider
                     li
                       a(href='#') Server Down!
-              .meta
+              .meta(ng-controller="BreadCrumbCtrl")
                 .page
                   | Folio
                 .breadcrumb-links
-                  | Home / Folio
+                  | Folio / 
+                  a(ng-href="{{crumbsLink}}") {{crumbs}}
+                  span(ng-show="subCrumbs")  / {{subCrumbs}}                  
           // End Header Bar
           // Main Content
+          .row.alerts-container(data-ng-controller='AlertsCtrl', data-ng-show='alerts.length')
+            .col-xs-12
+              uib-alert(ng-repeat='alert in alerts', type='{{alert.type}}', close='closeAlert($index)') {{alert.msg}}          
           div(ui-view='')
         // End Page Content
       // End Content Wrapper
