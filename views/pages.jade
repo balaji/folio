@@ -8,6 +8,8 @@ html(lang='en', ng-app='Folio')
     link(href='/javascripts/components/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
     link(href='/javascripts/components/font-awesome/css/font-awesome.min.css', rel='stylesheet')
     link(href='/javascripts/components/rdash-ui/dist/css/rdash.min.css', rel='stylesheet')
+    link(href='/javascripts/components/adm-dtp/dist/ADM-dateTimePicker.css', rel='stylesheet')
+    
     link(href='/stylesheets/page.css', rel='stylesheet')
 
     // Custom Scripts
@@ -29,7 +31,7 @@ html(lang='en', ng-app='Folio')
           li.sidebar-title
             span PAGES
           each page, index in pages
-            input(type='hidden', id=page.id, value=page.name)
+            input(type='hidden', id=page.id, data-page-token=page.access_token, value=page.name, class="fb-pages")
             li.sidebar-list
               a(ng-click="loadPage($event)", 
                 data-page-id=page.id, 

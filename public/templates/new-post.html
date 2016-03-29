@@ -14,6 +14,15 @@
           <div>
             <input type="checkbox" id="publishPost" ng-model="post.unpublish" ng-disabled="disableControls">
             <label for="publishPost"> Publish Later</label>
+
+						<input type="checkbox" id="schedulePublish" ng-model="postInfo.schedulePublish" ng-show="post.unpublish" ng-disabled="disableControls">
+						<label for="schedulePublish" ng-show="post.unpublish"> Schedule Publish Time</label>
+
+						<div ng-show="postInfo.schedulePublish && post.unpublish">
+							<label for="scheduleDate" > Pick a time</label>
+							<adm-dtp id="scheduleDate" ng-model='postInfo.date'></adm-dtp>
+						</div>
+
           </div>
           <button class="btn btn-xs btn-primary" ng-disabled="disableControls" ng-click="postPost()">Post</button>
 			</rd-widget-body>

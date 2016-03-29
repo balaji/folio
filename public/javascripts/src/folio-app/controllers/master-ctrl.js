@@ -1,15 +1,28 @@
 'use strict';
 angular.module('Folio')
-.controller('MasterCtrl', ['$scope', '$rootScope', '$state', 'facebookService', '$cookieStore',
-function MasterCtrl($scope, $rootScope, $state, facebookService, $cookieStore) {
-
-  // facebookService.getAccessToken().then(function(response) {
-  //   $cookieStore.put('accessToken', response.data.access_token);
-  // });
-  /**
-  * Sidebar Toggle & Cookie Control
-  */
+.controller('MasterCtrl', ['$scope', '$state', 'facebookService', 'jQueryService', '$cookieStore',
+function MasterCtrl($scope, $state, facebookService, $, $cookieStore) {
   var mobileView = 992;
+
+  var batch = [];
+  var paToken = null;
+  $(".fb-pages").each(function(i, element) {
+    paToken = $(element).attr("data-page-token");
+    batch.push({ "method" : "GET", "relative_url" : element.id +
+    "?access_token=" + paToken +
+    "&fields=about,name,access_token" })
+  });
+
+  if(batch.length !== 0) {
+    facebookService.batchRequest(paToken, batch).then(function(response) {
+      $scope.pages = [];
+      $(response.data).each(function(i, data) {
+        $scope.pages.push(JSON.parse(data.body));
+      })
+    });
+  } else {
+    $scope.pages = [];
+  }
 
   $scope.getWidth = function() {
     return window.innerWidth;
@@ -36,7 +49,6 @@ function MasterCtrl($scope, $rootScope, $state, facebookService, $cookieStore) {
     var $element = angular.element($event.currentTarget)[0];
     var pageId = $element.attributes['data-page-id'].value;
     var pageAccessToken = $element.attributes['data-page-token'].value;
-    // $rootScope.pageAccessToken = pageAccessToken;
     $cookieStore.put('pageAccessToken', pageAccessToken);
     $state.go('page', {page_id: pageId});
   };

@@ -36,4 +36,4 @@ router.get('/', filters.hasAuthToken, function(req, res, next) {
     });
   });
 
-  module.exports = router;
+module.exports = router;

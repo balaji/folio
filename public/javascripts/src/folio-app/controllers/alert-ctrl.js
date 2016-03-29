@@ -5,11 +5,15 @@ angular
 function AlertsCtrl($rootScope) {
   $rootScope.alerts = [];
 
+  $rootScope.clearAlerts = function() {
+    $rootScope.alerts = [];
+  };
+
   $rootScope.addAlert = function(alertMessage, alertType) {
-    $rootScope.alerts.push({
+    $rootScope.alerts = [{
       msg: alertMessage,
       type: alertType
-    });
+    }];
   };
 
   $rootScope.closeAlert = function(index) {

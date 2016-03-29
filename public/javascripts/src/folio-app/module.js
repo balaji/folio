@@ -1,14 +1,21 @@
 require('../../components/angular/angular.min');
+require('../../components/angular-bootstrap/ui-bootstrap.min');
 require('../../components/angular-bootstrap/ui-bootstrap-tpls.min');
 require('../../components/angular-cookies/angular-cookies.min');
 require('../../components/angular-ui-router/release/angular-ui-router.min');
+require('../../components/adm-dtp/dist/ADM-dateTimePicker.min');
 
-angular.module('Folio', ['ui.bootstrap', 'ui.router', 'ngCookies'])
-.config(['$stateProvider', '$urlRouterProvider',
-function($stateProvider, $urlRouterProvider) {
-  // For unmatched routes
+angular.module('Folio', ['ui.bootstrap', 'ui.router', 'ngCookies', 'ADM-dateTimePicker'])
+.config(['$stateProvider', '$urlRouterProvider', 'ADMdtpProvider',
+function($stateProvider, $urlRouterProvider, ADMdtpProvider) {
+  ADMdtpProvider.setOptions({
+    calType: 'gregorian',
+    format: 'MM/DD/YYYY hh:mm',
+    multiple: false
+  });
+
   $urlRouterProvider.otherwise('/');
-  // Application routes
+
   $stateProvider
   .state('index', {
     url: '/',

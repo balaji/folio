@@ -1,0 +1,43 @@
+<rd-widget>
+  <rd-widget-header title="Published Posts" ng-if="posts.type == 'PUB'"></rd-widget-header>
+  <rd-widget-header title="Un-Published Posts" ng-if="posts.type == 'UN_PUB'"></rd-widget-header>
+  <rd-widget-body ng-show="!posts">
+    <rd-loading></rd-loading>
+  </rd-widget-body>
+  <rd-widget-body classes="large no-padding" ng-show="posts">
+    <div class="message" ng-show="!posts.data.length">
+      <span ng-if="posts.type === 'PUB'">No Published </span>
+      <span ng-if="posts.type === 'UN_PUB'">No Un-Published </span>
+      Posts.
+    </div>
+    <div class="table-responsive" ng-show="posts.data.length">
+      <table class="table">
+        <tbody>
+          <tr ng-repeat="post in posts.data">
+            <td style="width:25%" ng-if="posts.type === 'PUB'">{{post.updated_time | date:"MM/dd/yyyy H:mm"}}</td>
+            <td style="width:25%" ng-if="posts.type === 'UN_PUB'">{{post.created_time | date:"MM/dd/yyyy H:mm"}}</td>
+            <td style="width:65%">
+              <a ng-href="#/post/{{post.id}}">
+                {{post.message}}
+                <span ng-if="post.status_type == 'added_photos'"> [Photo(s)]</span>
+                <span ng-if="post.status_type == 'added_video'"> [Video]</span>
+              </a>
+            </td>
+            <td style="width:10%">
+              <a ng-href="https://facebook.com/{{post.id}}" target="_blank">
+                <span class="fa fa-external-link"></span>
+              </a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </rd-widget-body>
+  <rd-widget-footer ng-if="posts.paging">
+    <ul class="pagination pagination-sm pull-right">
+      <li ng-if="posts.paging.previous"><a ng-click="loadMore(posts.paging.previous, posts.type, 'prev')">&laquo;</a></li>
+      <li ng-if="posts.paging.next"><a ng-click="loadMore(posts.paging.next, posts.type, 'next')">&raquo;</a></li>
+    </ul>
+    <div class="clearfix"></div>
+  </rd-widget-footer>
+</rd-widget>

@@ -1,18 +1,21 @@
 {
-    "name": "folio-web",
-    "version": "0.0.1",
-    "description": "Facebook webapp to manage Pages.",
-    "homepage": "https://folioweb.herokuapp.com",
-    "authors": [
-        "Balaji Damodaran <damodaran.balaji@gmail.com>"
-    ],
-    "dependencies": {
-        "rdash-ui": "1.0.*",
-        "angular": "~1.5.0",
-        "angular-cookies": "~1.5.0",
-        "angular-bootstrap": "~1.0.3",
-        "angular-ui-router": "^0.2.15",
-        "bootstrap": "~3.3.6",
-        "font-awesome": "~4.5.0"
-    }
+  "name": "folio-web",
+  "version": "0.0.1",
+  "description": "Facebook webapp to manage Pages.",
+  "homepage": "https://folioweb.herokuapp.com",
+  "authors": [
+    "Balaji Damodaran <damodaran.balaji@gmail.com>"
+  ],
+  "dependencies": {
+    "rdash-ui": "1.0.*",
+    "angular": "~1.5.0",
+    "angular-cookies": "~1.5.0",
+    "angular-bootstrap": "~1.0.3",
+    "angular-ui-router": "^0.2.15",
+    "bootstrap": "~3.3.6",
+    "font-awesome": "~4.5.0",
+    "angular-ui-bootstrap-datetimepicker": "^1.2.4",
+    "adm-dtp": "*",
+    "dateformat": "^0.4.1"
+  }
 }

@@ -3,17 +3,16 @@
 angular.module("Folio")
 .service("facebookService", ["$http", function($http) {
   var baseUrl ="https://graph.facebook.com/";
-  return {
-    getAccessToken: function() {
-      var clientId = document.getElementById("appId").value;
-      var code = document.getElementById("fbCode").value;
-      var redirectUri =  document.getElementById("redirectUri").value;
-      return $http({
-        method: "GET",
-        url: baseUrl + "oauth/access_token?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&code=" + code
-      });
-    },
 
+  var batchRequest = function(paToken, batch) {
+    return $http({
+      method: "POST",
+      url: baseUrl,
+      data: {"batch" : batch, "access_token" : paToken}
+    });
+  };
+
+  return {
     getPageInformation: function(pageId, pageAccessToken) {
       return $http({
         method: "GET",
@@ -47,7 +46,8 @@ angular.module("Folio")
       var url;
       var fd = null;
       if(options.source) {
-        url = baseUrl + pageId + "/photos?access_token=" + pageAccessToken;
+        var type = (options.source.type.indexOf('image') != -1) ? "photos" : "videos";
+        url = baseUrl + pageId + "/"+ type +"?access_token=" + pageAccessToken;
         fd = new FormData();
         fd.append("source", options.source);
       } else {
@@ -68,6 +68,10 @@ angular.module("Folio")
 
       if(options.picture) {
         url += "&picture=" + options.picture;
+      }
+
+      if(options.scheduled_publish_time) {
+        url += "&scheduled_publish_time=" + options.scheduled_publish_time;
       }
 
       var postInfo = {
@@ -95,22 +99,24 @@ angular.module("Folio")
       });
     },
 
+    batchRequest: function(paToken, batch) {
+      return batchRequest(paToken, batch);
+    },
+
     getAllPosts: function(pageId, paToken) {
       var batch = [
-        { "method" : "GET", "relative_url" : pageId + "/promotable_posts?is_published=false&amp;fields=id,message,created_time"},
-        { "method" : "GET", "relative_url" : pageId + "/feed?fields=id,message,updated_time"}];
-        return $http({
-          method: "POST",
-          url: baseUrl,
-          data: {"batch" : batch, "access_token" : paToken}
-        });
-      },
+        { "method" : "GET", "relative_url" : pageId + "/promotable_posts?is_published=false&amp;fields=id,message,created_time,status_type&limit=10"},
+        { "method" : "GET", "relative_url" : pageId + "/posts?fields=id,message,updated_time,status_type&limit=10"},
+        { "method" : "GET", "relative_url" : pageId + "/insights"}
+      ];
+      return batchRequest(paToken, batch);
+    },
 
-      postInsights: function(postId, paToken) {
-        return $http({
-          method: 'GET',
-          url: baseUrl + postId + '/insights?access_token=' + paToken
-        });
-      }
+    postInsights: function(postId, paToken) {
+      return $http({
+        method: 'GET',
+        url: baseUrl + postId + '/insights?access_token=' + paToken
+      });
     }
-  }]);
+  };
+}]);
