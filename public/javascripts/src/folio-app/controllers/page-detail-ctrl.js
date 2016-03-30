@@ -27,25 +27,32 @@ function($scope, $rootScope, $state, $http, $cookieStore, facebookService) {
   };
 
   $scope.loadMore = function(url, flag, dir) {
-    var prevPubPaging, prevUnPubPaging;
+    var prevPubPosts, prevUnPubPosts;
     if(flag === "PUB") {
-      prevPubPaging = $scope.publishedPosts.paging;
+      prevPubPosts = $scope.publishedPosts;
       $scope.publishedPosts = null;
     } else {
-      prevUnPubPaging = $scope.unPublishedPosts.paging;
+      prevUnPubPosts = $scope.unPublishedPosts;
       $scope.unPublishedPosts = null;
     }
     $http.get(url).then(function(response) {
       console.log(response.data);
       if(flag === "PUB") {
-        $scope.publishedPosts = addType(response.data, "PUB");
-        if(!$scope.publishedPosts.paging) {
-          if(dir === 'prev') $scope.publishedPosts.paging = {next: prevPubPaging.next};
-          if(dir === 'next') $scope.publishedPosts.paging = {previous: prevPubPaging.previous};
+        if(!response.data.paging) {
+          $scope.publishedPosts = prevPubPosts;
+          if(dir === 'prev') $scope.publishedPosts.paging.previous = null;
+          if(dir === 'next') $scope.publishedPosts.paging.next = null;
+        } else {
+          $scope.publishedPosts = addType(response.data, "PUB");
         }
       } else {
-        $scope.unPublishedPosts = addType(response.data, "UN_PUB");
-        if(!$scope.unPublishedPosts.paging) $scope.unPublishedPosts.paging = prevUnPubPaging;
+        if(!response.data.paging) {
+          $scope.unPublishedPosts = prevUnPubPosts;
+          if(dir === 'prev') $scope.unPublishedPosts.paging.previous = null;
+          if(dir === 'next') $scope.unPublishedPosts.paging.next = null;
+        }else {
+          $scope.unPublishedPosts = addType(response.data, "UN_PUB");
+        }
       }
     });
   };
