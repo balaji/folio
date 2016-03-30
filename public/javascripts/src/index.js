@@ -3,6 +3,6 @@ folioFbLogin = require('./facebook-login');
 
 require('./folio-app/module');
 function requireAll(r) {
-	r.keys().forEach(r);
+    r.keys().forEach(r);
 }
 requireAll(require.context('./folio-app/', true, /\.js$/));

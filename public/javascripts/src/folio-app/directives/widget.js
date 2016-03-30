@@ -1,20 +1,13 @@
-/**
- * Widget Directive
- */
+'use strict';
+function rdWidget() {
+    return {
+        transclude: true,
+        template: '<div class="widget" ng-transclude></div>',
+        restrict: 'EA'
+    };
+}
 
 angular
-		.module('Folio')
-		.directive('rdWidget', rdWidget);
+    .module('Folio')
+    .directive('rdWidget', rdWidget);
 
-function rdWidget() {
-	var directive = {
-		transclude: true,
-		template: '<div class="widget" ng-transclude></div>',
-		restrict: 'EA'
-	};
-	return directive;
-
-	function link(scope, element, attrs) {
-		/* */
-	}
-}
