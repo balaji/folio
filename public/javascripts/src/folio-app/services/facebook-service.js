@@ -1,108 +1,120 @@
 "use strict";
 
-angular.module("Folio")
-.service("facebookService", ["$http", function($http) {
-  var baseUrl ="https://graph.facebook.com/";
+angular
+		.module("Folio")
+		.service("facebookService", ["$http", facebookService]);
 
-  var batchRequest = function(paToken, batch) {
-    return $http({
-      method: "POST",
-      url: baseUrl,
-      data: {"batch" : batch, "access_token" : paToken}
-    });
-  };
+function facebookService($http) {
+	var baseUrl = "https://graph.facebook.com/";
 
-  return {
-    getPageInformation: function(pageId, pageAccessToken) {
-      return $http({
-        method: "GET",
-        url: baseUrl + pageId + "?access_token=" + pageAccessToken + "&fields=about,attire,bio,location,parking,hours,emails,website,description"
-      })
-    },
+	var batchRequest = function (paToken, batch) {
+		return $http({
+			method: "POST",
+			url: baseUrl,
+			data: {"batch": batch, "access_token": paToken}
+		});
+	};
 
-    updatePageInformation: function(pageId, pageAccessToken, field, value) {
-      return $http({
-        method: "POST",
-        url: baseUrl + pageId + "?access_token=" + pageAccessToken + "&" + field + "=" + value
-      });
-    },
+	return {
+		getPageInformation: function (pageId, pageAccessToken) {
+			return $http({
+				method: "GET",
+				url: baseUrl + pageId + "?access_token=" + pageAccessToken + "&fields=about,attire,bio,location,parking,hours,emails,website,description"
+			})
+		},
 
-    post: function(pageId, pageAccessToken, options) {
+		updatePageInformation: function (pageId, pageAccessToken, field, value) {
+			return $http({
+				method: "POST",
+				url: baseUrl + pageId + "?access_token=" + pageAccessToken + "&" + field + "=" + value
+			});
+		},
 
-      var url;
-      var fd = null;
-      if(options.source) {
-        var type = (options.source.type.indexOf('image') != -1) ? "photos" : "videos";
-        url = baseUrl + pageId + "/"+ type +"?access_token=" + pageAccessToken;
-        fd = new FormData();
-        fd.append("source", options.source);
-      } else {
-        url = baseUrl + pageId + "/feed?access_token=" + pageAccessToken;
-      }
+		post: function (pageId, pageAccessToken, options) {
 
-      if(options.message) {
-        url += "&message=" + options.message;
-      }
+			var url;
+			var fd = null;
+			if (options.source) {
+				var type = (options.source.type.indexOf('image') != -1) ? "photos" : "videos";
+				url = baseUrl + pageId + "/" + type + "?access_token=" + pageAccessToken;
+				fd = new FormData();
+				fd.append("source", options.source);
+			} else {
+				url = baseUrl + pageId + "/feed?access_token=" + pageAccessToken;
+			}
 
-      if(options.link) {
-        url += "&link=" + options.link;
-      }
+			if (options.message) {
+				url += "&message=" + options.message;
+			}
 
-      if(options.unpublish) {
-        url += "&published=false";
-      }
+			if (options.link) {
+				url += "&link=" + options.link;
+			}
 
-      if(options.picture) {
-        url += "&picture=" + options.picture;
-      }
+			if (options.unpublish) {
+				url += "&published=false";
+			}
 
-      if(options.scheduled_publish_time) {
-        url += "&scheduled_publish_time=" + options.scheduled_publish_time;
-      }
+			if (options.picture) {
+				url += "&picture=" + options.picture;
+			}
 
-      var postInfo = {
-        method: "POST",
-        url: url
-      };
-      if(fd) {
-        postInfo.data = fd;
-        postInfo.headers = { 'Content-Type': undefined };
-      }
-      return $http(postInfo);
-    },
+			if (options.scheduled_publish_time) {
+				url += "&scheduled_publish_time=" + options.scheduled_publish_time;
+			}
 
-    publishPost: function(postId, pageAccessToken) {
-      return $http({
-        method: "POST",
-        url: baseUrl + postId + "?is_published=true&access_token=" + pageAccessToken
-      });
-    },
+			var postInfo = {
+				method: "POST",
+				url: url
+			};
+			if (fd) {
+				postInfo.data = fd;
+				postInfo.headers = {'Content-Type': undefined};
+			}
+			return $http(postInfo);
+		},
 
-    deletePost: function(postId, paToken) {
-      return $http({
-        method: 'DELETE',
-        url: baseUrl + postId + "?access_token=" + paToken
-      });
-    },
+		publishPost: function (postId, pageAccessToken) {
+			return $http({
+				method: "POST",
+				url: baseUrl + postId + "?is_published=true&access_token=" + pageAccessToken
+			});
+		},
 
-    batchRequest: function(paToken, batch) {
-      return batchRequest(paToken, batch);
-    },
+		deletePost: function (postId, paToken) {
+			return $http({
+				method: 'DELETE',
+				url: baseUrl + postId + "?access_token=" + paToken
+			});
+		},
 
-    getAllPosts: function(pageId, paToken) {
-      var batch = [
-      { "method" : "GET", "relative_url" : pageId + "/promotable_posts?is_published=false&amp;fields=id,message,created_time,status_type&limit=10"},
-      { "method" : "GET", "relative_url" : pageId + "/posts?fields=id,message,updated_time,status_type&limit=10"},
-      { "method" : "GET", "relative_url" : pageId + "/insights"}
-      ];
-      return batchRequest(paToken, batch);
-    },
+		batchRequest: function (paToken, batch) {
+			return batchRequest(paToken, batch);
+		},
 
-    postInsights: function(postId, paToken) {
-      return $http({
-        method: 'GET',
-        url: baseUrl + postId + '/insights?access_token=' + paToken
-      });
-    }
-  };
-}]);
+		getAllPosts: function (pageId, paToken) {
+			var batch = [
+				{
+					"method": "GET",
+					"relative_url": pageId + "/promotable_posts?is_published=false&amp;fields=id,message,created_time,status_type&limit=10"
+				},
+				{
+					"method": "GET",
+					"relative_url": pageId + "/posts?fields=id,message,updated_time,status_type&limit=10"
+				},
+				{
+					"method": "GET",
+					"relative_url": pageId + "/insights"
+				}
+			];
+			return batchRequest(paToken, batch);
+		},
+
+		postInsights: function (postId, paToken) {
+			return $http({
+				method: 'GET',
+				url: baseUrl + postId + '/insights?access_token=' + paToken
+			});
+		}
+	};
+}

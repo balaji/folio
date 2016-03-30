@@ -1,25 +1,26 @@
 <div class="row">
-	<div class="col-md-6 col-xs-12" ng-show="!pages">
-	<rd-widget-body>
-		<rd-loading></rd-loading>
-	</rd-widget-body>
-</div>
-	<div class="col-md-6 col-xs-12" ng-show="pages && pages.length == 0">
-		<rd-widget>
-		<rd-widget-body>
-			No pages found.
-		</rd-widget-body>
-		</rd-widget>
-	</div>
-	<div class="col-md-6 col-xs-12" ng-repeat="page in pages" ng-show="pages && pages.length > 0">
-		<rd-widget>
-			<rd-widget-body class="clickable" data-page-token="{{page.access_token}}" data-page-id="{{page.id}}" ng-click="loadPage($event)">
-				<div class="pull-left" style="margin-right: 15px">
-					<img src="https://graph.facebook.com/v2.5/{{page.id}}/picture" alt="" height="65" />
-				</div>
-				<div class="title">{{page.name}}</div>
-				<div class="comment">{{page.about}}</div>
-			</rd-widget-body>
-		</rd-widget>
-	</div>
+  <div class="col-md-6 col-xs-12" ng-show="!pages">
+    <rd-widget-body>
+      <rd-loading></rd-loading>
+    </rd-widget-body>
+  </div>
+  <div class="col-md-6 col-xs-12" ng-show="pages && pages.length == 0">
+    <rd-widget>
+      <rd-widget-body>
+        No pages found.
+      </rd-widget-body>
+    </rd-widget>
+  </div>
+  <div class="col-md-6 col-xs-12" ng-repeat="page in pages" ng-show="pages && pages.length > 0">
+    <rd-widget>
+      <rd-widget-body class="clickable" data-page-token="{{page.access_token}}" data-page-id="{{page.id}}"
+                      ng-click="loadPage($event)">
+        <div class="pull-left" style="margin-right: 15px">
+          <img src="https://graph.facebook.com/v2.5/{{page.id}}/picture" alt="" height="65"/>
+        </div>
+        <div class="title">{{page.name}}</div>
+        <div class="comment">{{page.about}}</div>
+      </rd-widget-body>
+    </rd-widget>
+  </div>
 </div>

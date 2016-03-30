@@ -1,32 +1,34 @@
 <div ng-controller="NewPostCtrl">
-<div class="row">
-	<div class="col-lg-6 col-md-12 col-xs-12">
-		<rd-widget>
-      <rd-widget-header icon="fa-plus" title="New Post">
-      </rd-widget-header>
-			<rd-widget-body>
+  <div class="row">
+    <div class="col-lg-6 col-md-12 col-xs-12">
+      <rd-widget>
+        <rd-widget-header icon="fa-plus" title="New Post">
+        </rd-widget-header>
+        <rd-widget-body>
           <div>
-            <textarea rows="5" name="message" ng-model="post.message" ng-disabled="disableControls" cols="60"></textarea>
+            <textarea rows="5" name="message" ng-model="post.message" ng-disabled="disableControls"
+                      cols="60"></textarea>
           </div>
-					<div>
-						<input type="file" name="source" fileread="post.source" value="">
-					</div>
+          <div>
+            <input type="file" name="source" fileread="post.source" value="">
+          </div>
           <div>
             <input type="checkbox" id="publishPost" ng-model="post.unpublish" ng-disabled="disableControls">
             <label for="publishPost"> Publish Later</label>
 
-						<input type="checkbox" id="schedulePublish" ng-model="postInfo.schedulePublish" ng-show="post.unpublish" ng-disabled="disableControls">
-						<label for="schedulePublish" ng-show="post.unpublish"> Schedule Publish Time</label>
+            <input type="checkbox" id="schedulePublish" ng-model="postInfo.schedulePublish" ng-show="post.unpublish"
+                   ng-disabled="disableControls">
+            <label for="schedulePublish" ng-show="post.unpublish"> Schedule Publish Time</label>
 
-						<div ng-show="postInfo.schedulePublish && post.unpublish">
-							<label for="scheduleDate" > Pick a time</label>
-							<adm-dtp id="scheduleDate" ng-model='postInfo.date'></adm-dtp>
-						</div>
+            <div ng-show="postInfo.schedulePublish && post.unpublish">
+              <label for="scheduleDate"> Pick a time</label>
+              <adm-dtp id="scheduleDate" ng-model='postInfo.date'></adm-dtp>
+            </div>
 
           </div>
           <button class="btn btn-xs btn-primary" ng-disabled="disableControls" ng-click="postPost()">Post</button>
-			</rd-widget-body>
-		</rd-widget>
-	</div>
-</div>
+        </rd-widget-body>
+      </rd-widget>
+    </div>
+  </div>
 </div>

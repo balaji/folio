@@ -1,114 +1,115 @@
 angular.module('Folio')
-.controller('PageDetailCtrl', ['$scope', '$rootScope', '$state', '$http', '$cookieStore', 'facebookService',
-function($scope, $rootScope, $state, $http, $cookieStore, facebookService) {
-  var pageId = $state.params.page_id;
-  var paToken= null;
-  if (angular.isDefined($cookieStore.get('pageAccessToken'))) {
-    paToken = $cookieStore.get('pageAccessToken');
-  }
+		.controller('PageDetailCtrl', ['$scope', '$state', '$http', '$cookieStore', 'facebookService', PageDetailCtrl]);
 
-  if(!paToken) {
-    $state.go('index');
-    return;
-  }
+function PageDetailCtrl($scope, $state, $http, $cookieStore, facebookService) {
+	var pageId = $state.params.page_id;
+	var paToken = null;
+	if (angular.isDefined($cookieStore.get('pageAccessToken'))) {
+		paToken = $cookieStore.get('pageAccessToken');
+	}
 
-  var loadAllPosts = function() {
-    facebookService.getAllPosts(pageId, paToken).then(function(response) {
-      var unpublished = JSON.parse(response.data[0].body);
-      var published = JSON.parse(response.data[1].body);
-      $scope.unPublishedPosts = addType(unpublished, "UN_PUB");
-      $scope.publishedPosts = addType(published, "PUB");
-    });
-  };
+	if (!paToken) {
+		$state.go('index');
+		return;
+	}
 
-  var addType = function(posts, type_name) {
-    posts.type = type_name;
-    return posts;
-  };
+	var loadAllPosts = function () {
+		facebookService.getAllPosts(pageId, paToken).then(function (response) {
+			var unpublished = JSON.parse(response.data[0].body);
+			var published = JSON.parse(response.data[1].body);
+			$scope.unPublishedPosts = addType(unpublished, "UN_PUB");
+			$scope.publishedPosts = addType(published, "PUB");
+		});
+	};
 
-  $scope.loadMore = function(url, flag, dir) {
-    var prevPubPosts, prevUnPubPosts;
-    if(flag === "PUB") {
-      prevPubPosts = $scope.publishedPosts;
-      $scope.publishedPosts = null;
-    } else {
-      prevUnPubPosts = $scope.unPublishedPosts;
-      $scope.unPublishedPosts = null;
-    }
-    $http.get(url).then(function(response) {
-      console.log(response.data);
-      if(flag === "PUB") {
-        if(!response.data.paging) {
-          $scope.publishedPosts = prevPubPosts;
-          if(dir === 'prev') $scope.publishedPosts.paging.previous = null;
-          if(dir === 'next') $scope.publishedPosts.paging.next = null;
-        } else {
-          $scope.publishedPosts = addType(response.data, "PUB");
-        }
-      } else {
-        if(!response.data.paging) {
-          $scope.unPublishedPosts = prevUnPubPosts;
-          if(dir === 'prev') $scope.unPublishedPosts.paging.previous = null;
-          if(dir === 'next') $scope.unPublishedPosts.paging.next = null;
-        }else {
-          $scope.unPublishedPosts = addType(response.data, "UN_PUB");
-        }
-      }
-    });
-  };
+	var addType = function (posts, type_name) {
+		posts.type = type_name;
+		return posts;
+	};
 
-  var countPosts = function() {
-    $scope.totalPosts = 0;
-    $scope.totalUnPosts = 0;
-    $scope.tpLoading = true;
-    $scope.tuLoading = true;
-    $http.get("https://graph.facebook.com/" + pageId +
-    "/posts?limit=100&fields=id&access_token=" + paToken).then(function(response) {
-      countMore(response.data, "PUB");
-    });
-    $http.get("https://graph.facebook.com/" + pageId +
-    "/promotable_posts?limit=100&fields=id&is_published=false&access_token="+paToken).then(function(response) {
-      countMore(response.data, "UN_PUB");
-    });
-  };
+	$scope.loadMore = function (url, flag, dir) {
+		var prevPubPosts, prevUnPubPosts;
+		if (flag === "PUB") {
+			prevPubPosts = $scope.publishedPosts;
+			$scope.publishedPosts = null;
+		} else {
+			prevUnPubPosts = $scope.unPublishedPosts;
+			$scope.unPublishedPosts = null;
+		}
+		$http.get(url).then(function (response) {
+			console.log(response.data);
+			if (flag === "PUB") {
+				if (!response.data.paging) {
+					$scope.publishedPosts = prevPubPosts;
+					if (dir === 'prev') $scope.publishedPosts.paging.previous = null;
+					if (dir === 'next') $scope.publishedPosts.paging.next = null;
+				} else {
+					$scope.publishedPosts = addType(response.data, "PUB");
+				}
+			} else {
+				if (!response.data.paging) {
+					$scope.unPublishedPosts = prevUnPubPosts;
+					if (dir === 'prev') $scope.unPublishedPosts.paging.previous = null;
+					if (dir === 'next') $scope.unPublishedPosts.paging.next = null;
+				} else {
+					$scope.unPublishedPosts = addType(response.data, "UN_PUB");
+				}
+			}
+		});
+	};
 
-  var countMore = function(posts, flag) {
-    if(flag === "PUB") $scope.totalPosts += posts.data.length;
-    else $scope.totalUnPosts += posts.data.length;
-    if(posts.data.length === 100) {
-      $http.get(posts.paging.next).then(function(response) {
-        countMore(response.data, flag);
-      });
-    } else {
-      if (flag === "PUB") $scope.tpLoading = false;
-      else $scope.tuLoading = false;
-    }
-  };
+	var countPosts = function () {
+		$scope.totalPosts = 0;
+		$scope.totalUnPosts = 0;
+		$scope.tpLoading = true;
+		$scope.tuLoading = true;
+		$http.get("https://graph.facebook.com/" + pageId +
+				"/posts?limit=100&fields=id&access_token=" + paToken).then(function (response) {
+			countMore(response.data, "PUB");
+		});
+		$http.get("https://graph.facebook.com/" + pageId +
+				"/promotable_posts?limit=100&fields=id&is_published=false&access_token=" + paToken).then(function (response) {
+			countMore(response.data, "UN_PUB");
+		});
+	};
 
-  $scope.publish = function(postId) {
-    $scope.unPublishedPosts = null;
-    $scope.publishedPosts = null;
-    facebookService.publishPost(postId, paToken).then(function(response) {
-      loadAllPosts();
-    });
-  };
+	var countMore = function (posts, flag) {
+		if (flag === "PUB") $scope.totalPosts += posts.data.length;
+		else $scope.totalUnPosts += posts.data.length;
+		if (posts.data.length === 100) {
+			$http.get(posts.paging.next).then(function (response) {
+				countMore(response.data, flag);
+			});
+		} else {
+			if (flag === "PUB") $scope.tpLoading = false;
+			else $scope.tuLoading = false;
+		}
+	};
 
-  $scope.delete = function(postId) {
-    $scope.unPublishedPosts = null;
-    $scope.publishedPosts = null;
-    facebookService.deletePost(postId, paToken).then(function(response) {
-      loadAllPosts();
-    });
-  };
+	$scope.publish = function (postId) {
+		$scope.unPublishedPosts = null;
+		$scope.publishedPosts = null;
+		facebookService.publishPost(postId, paToken).then(function (response) {
+			loadAllPosts();
+		});
+	};
 
-  $scope.newPost = function() {
-    $state.go('new_post', {page_id: pageId});
-  };
+	$scope.delete = function (postId) {
+		$scope.unPublishedPosts = null;
+		$scope.publishedPosts = null;
+		facebookService.deletePost(postId, paToken).then(function (response) {
+			loadAllPosts();
+		});
+	};
 
-  $scope.settings = function() {
-    $state.go('page_settings', {page_id: pageId});
-  };
+	$scope.newPost = function () {
+		$state.go('new_post', {page_id: pageId});
+	};
 
-  countPosts();
-  loadAllPosts();
-}]);
+	$scope.settings = function () {
+		$state.go('page_settings', {page_id: pageId});
+	};
+
+	countPosts();
+	loadAllPosts();
+}
