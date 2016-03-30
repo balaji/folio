@@ -4,3 +4,4 @@ public/javascripts/components
 dump.rdb
 .env
 public/stylesheets/*.css
+.idea

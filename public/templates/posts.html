@@ -1,6 +1,6 @@
 <rd-widget>
-  <rd-widget-header title="Published Posts" ng-if="posts.type == 'PUB'"></rd-widget-header>
-  <rd-widget-header title="Un-Published Posts" ng-if="posts.type == 'UN_PUB'"></rd-widget-header>
+  <rd-widget-header icon="fa-send" title="Published Posts" ng-if="posts.type == 'PUB'"></rd-widget-header>
+  <rd-widget-header icon="fa-hourglass-half" title="Un-Published Posts" ng-if="posts.type == 'UN_PUB'"></rd-widget-header>
   <rd-widget-body ng-show="!posts">
     <rd-loading></rd-loading>
   </rd-widget-body>

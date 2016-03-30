@@ -27,20 +27,6 @@ angular.module("Folio")
       });
     },
 
-    getPosts: function(pageId, pageAccessToken) {
-      return $http({
-        method: "GET",
-        url: baseUrl + pageId + "/feed?fields=id,message,from,to&access_token=" + pageAccessToken
-      });
-    },
-
-    getUnpublishedPosts: function(pageId, pageAccessToken) {
-      return $http({
-        method: "GET",
-        url: baseUrl + pageId + "/promotable_posts?is_published=false&fields=id,message,from,to&access_token=" + pageAccessToken
-      });
-    },
-
     post: function(pageId, pageAccessToken, options) {
 
       var url;
@@ -105,9 +91,9 @@ angular.module("Folio")
 
     getAllPosts: function(pageId, paToken) {
       var batch = [
-        { "method" : "GET", "relative_url" : pageId + "/promotable_posts?is_published=false&amp;fields=id,message,created_time,status_type&limit=10"},
-        { "method" : "GET", "relative_url" : pageId + "/posts?fields=id,message,updated_time,status_type&limit=10"},
-        { "method" : "GET", "relative_url" : pageId + "/insights"}
+      { "method" : "GET", "relative_url" : pageId + "/promotable_posts?is_published=false&amp;fields=id,message,created_time,status_type&limit=10"},
+      { "method" : "GET", "relative_url" : pageId + "/posts?fields=id,message,updated_time,status_type&limit=10"},
+      { "method" : "GET", "relative_url" : pageId + "/insights"}
       ];
       return batchRequest(paToken, batch);
     },

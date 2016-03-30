@@ -12,7 +12,6 @@ html(lang='en', ng-app='Folio')
     
     link(href='/stylesheets/page.css', rel='stylesheet')
 
-    // Custom Scripts
     script(type='text/javascript', src='https://connect.facebook.net/en_US/sdk.js')
     script(type='text/javascript', src='/javascripts/builds/bundle.js')
   body(ng-controller='MasterCtrl')
@@ -45,10 +44,8 @@ html(lang='en', ng-app='Folio')
           .col-xs-6
             a(href='#')
               | Support
-      // End Sidebar
       #content-wrapper
         .page-content
-          // Header Bar
           .row.header
             .col-xs-12
               .user.pull-right
@@ -60,29 +57,16 @@ html(lang='en', ng-app='Folio')
                     li.divider
                     li.link
                       a(href='/logout')
-                        | Logout
-                .item.dropdown(uib-dropdown='')
-                  a.dropdown-toggle(href='#', uib-dropdown-toggle='')
-                    i.fa.fa-bell-o
-                  ul.dropdown-menu.dropdown-menu-right
-                    li.dropdown-header
-                      | Notifications
-                    li.divider
-                    li
-                      a(href='#') Server Down!
+                        | Logout                
               .meta(ng-controller="BreadCrumbCtrl")
                 .page
                   | Folio
                 .breadcrumb-links
-                  | Folio / 
-                  a(ng-href="{{crumbsLink}}") {{crumbs}}
+                  a(ng-href="#/") Folio
+                  span(ng-show="crumbsLink")  /  
+                  a(ng-show="crumbsLink" ng-href="{{crumbsLink}}") {{crumbs}}
                   span(ng-show="subCrumbs")  / {{subCrumbs}}                  
-          // End Header Bar
-          // Main Content
           .row.alerts-container(data-ng-controller='AlertsCtrl', data-ng-show='alerts.length')
             .col-xs-12
               uib-alert(ng-repeat='alert in alerts', type='{{alert.type}}', close='closeAlert($index)') {{alert.msg}}          
           div(ui-view='')
-        // End Page Content
-      // End Content Wrapper
-    // End Page Wrapper

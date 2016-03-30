@@ -1,3 +1,30 @@
 .clickable {
   cursor: pointer;
 }
+
+.row {
+  &.header {
+    height: 70px;
+
+    .meta {
+      .page {
+        font-size: 20px;
+      }
+
+      .breadcrumb-links {
+        font-size: 14px;
+      }
+    }
+
+    .user {
+      > .item {
+        img {
+          width: 45px;
+          height: 45px;
+          margin-top: 15px;
+          border-radius: 5px;
+        }
+      }
+    }
+  }
+}

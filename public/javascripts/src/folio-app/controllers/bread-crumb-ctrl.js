@@ -1,8 +1,7 @@
 angular.module('Folio')
 .controller('BreadCrumbCtrl', ['$scope', '$rootScope',
 function($scope, $rootScope) {
-  $scope.crumbs = 'Dashboard';
-  $scope.crumbsLink = "/";
+  $scope.crumbsLink = null;
 
   $rootScope.$on('$stateChangeStart',function(event, toState, toParams, fromState, fromParams){
     $scope.subCrumbs = null;
@@ -34,8 +33,7 @@ function($scope, $rootScope) {
         break;
 
       default:
-        $scope.crumbs = 'Dashboard';
-        $scope.crumbsLink = "/";
+        $scope.crumbsLink = null;
     }
   });
 }]);
