@@ -77,7 +77,7 @@ function facebookService($http) {
             var batch = [
                 {
                     "method": "GET",
-                    "relative_url": postId + "?access_token=" + paToken + "&fields=from,is_published,link,message,picture,name,description,source,type,shares,caption"
+                    "relative_url": postId + "?access_token=" + paToken + "&fields=from,is_published,link,message,picture,name,description,source,type,shares,caption,status_type"
                 },
                 {
                     "method": "GET",

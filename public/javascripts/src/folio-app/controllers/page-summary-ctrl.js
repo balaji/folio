@@ -86,22 +86,6 @@ function PageSummaryCtrl($scope, $state, $http, $cookieStore, facebookService) {
         }
     };
 
-    $scope.publish = function (postId) {
-        $scope.unPublishedPosts = null;
-        $scope.publishedPosts = null;
-        facebookService.publishPost(postId, paToken).then(function (response) {
-            loadAllPosts();
-        });
-    };
-
-    $scope.delete = function (postId) {
-        $scope.unPublishedPosts = null;
-        $scope.publishedPosts = null;
-        facebookService.deletePost(postId, paToken).then(function (response) {
-            loadAllPosts();
-        });
-    };
-
     $scope.newPost = function () {
         $state.go('new_post', {page_id: pageId});
     };

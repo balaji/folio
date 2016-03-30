@@ -68,8 +68,8 @@
       </div>
       <div class="panel-body" ng-show="pageInsights">
         <div class="row {{$index % 2 == 0 ? 'even' : 'odd'}}" ng-repeat="insight in pageInsights.data | filter: { period: filterInsightsBy } : true track by $index">
-          <div class="col-xs-4 bold">{{insight.title}}</div>
-          <div class="col-xs-8" ng-if="insight.values[insight.values.length - 1].value">
+          <div class="col-xs-5 small">{{insight.description}}</div>
+          <div class="col-xs-7 small" ng-if="insight.values[insight.values.length - 1].value">
             <table width="80%">
               <tbody>
               <tr ng-repeat="(key, value) in insight.values[insight.values.length - 1].value">
@@ -79,8 +79,8 @@
               </tbody>
             </table>
           </div>
-          <div class="col-xs-8" ng-if="insight.values[insight.values.length - 1].value | isEmpty">0</div>
-          <div class="col-xs-8" ng-if="insight.values[insight.values.length - 1].value | isNumber">{{insight.values[insight.values.length - 1].value}}
+          <div class="col-xs-7 small" ng-if="insight.values[insight.values.length - 1].value | isEmpty">0</div>
+          <div class="col-xs-7 small" ng-if="insight.values[insight.values.length - 1].value | isNumber">{{insight.values[insight.values.length - 1].value}}
           </div>
         </div>
       </div>

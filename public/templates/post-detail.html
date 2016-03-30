@@ -1,11 +1,114 @@
 <div class="row" ng-controller="PostDetailCtrl">
   <div class="col-lg-6 col-md-12 col-xs-12">
     <div class="panel panel-default">
-      <div class="panel-heading">Heading</div>
-      <div class="panel-body">
-        Basic panel example
+      <div class="panel-heading">Post Details</div>
+      <div ng-show="!postDetails">
+        <rd-loading></rd-loading>
       </div>
-      <div class="panel-footer">Footer</div>
+      <div class="panel-body" ng-show="postDetails">
+        <div class="row" ng-hide="postDetails.type === 'photo' && postDetails.name !== 'Timeline Photos'">
+          <div class="col-xs-4 bold">View in facebook</div>
+          <div class="col-xs-8">
+            <a ng-href="https://facebook.com/{{postDetails.id}}" target="_blank">open</a>
+          </div>
+        </div>
+        <div class="row" ng-if="postDetails.type">
+          <div class="col-xs-4 bold">Post Type</div>
+          <div class="col-xs-8">{{postDetails.type}}</div>
+        </div>
+        <div class="row" ng-if="postDetails.message">
+          <div class="col-xs-4 bold">Message</div>
+          <div class="col-xs-8">{{postDetails.message}}</div>
+        </div>
+        <div class="row" ng-if="postDetails.caption">
+          <div class="col-xs-4 bold">Caption</div>
+          <div class="col-xs-8">{{postDetails.caption}}</div>
+        </div>
+        <div class="row" ng-if="postDetails.description">
+          <div class="col-xs-4 bold">Description</div>
+          <div class="col-xs-8">{{postDetails.description}}</div>
+        </div>
+        <div class="row" ng-if="postDetails.name">
+          <div class="col-xs-4 bold">Name</div>
+          <div class="col-xs-8">{{postDetails.name}}</div>
+        </div>
+        <div class="row" ng-if="postDetails.picture">
+          <div class="col-xs-4 bold">Picture</div>
+          <div class="col-xs-8">
+            <img ng-src="{{postDetails.picture}}" alt="">
+          </div>
+        </div>
+        <div class="row" ng-if="postDetails.from">
+          <div class="col-xs-4 bold">From</div>
+          <div class="col-xs-8">{{postDetails.from.name}}</div>
+        </div>
+        <div class="row" ng-if="postDetails.link">
+          <div class="col-xs-4 bold">Link</div>
+          <div class="col-xs-8">
+            <a href="{{postDetails.link}}" target="_blank">{{postDetails.link}}</a>
+          </div>
+        </div>
+        <div class="row" ng-if="postDetails.source">
+          <div class="col-xs-4 bold">Video</div>
+          <div class="col-xs-8">
+            <video ng-src="{{trustSrc(postDetails.source)}}" width="300" controls></video>
+          </div>
+        </div>
+
+        <div class="row" ng-if="postDetails.shares">
+          <div class="col-xs-4 bold">Shares</div>
+          <div class="col-xs-8">{{postDetails.shares.count}}</div>
+        </div>
+
+        <div class="row" ng-if="!postDetails.is_published">
+          <div class="col-xs-4"></div>
+          <div class="col-xs-8">
+            <button class="btn btn-xs btn-primary" ng-click="publish(postDetails.id)">Publish</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-4"></div>
+          <div class="col-xs-8">
+            <button class="btn btn-xs btn-danger" ng-click="delete(postDetails.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 col-md-12 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Post Insights
+
+        <select ng-model="filterInsightsBy">
+          <option value="day">Daily</option>
+          <option value="week">Week</option>
+          <option value="days_28">28 days</option>
+          <option value="lifetime">Lifetime</option>
+        </select>
+      </div>
+      <div ng-show="!postInsights">
+        <rd-loading></rd-loading>
+      </div>
+      <div class="panel-body" ng-show="postInsights">
+        <div class="row {{$index % 2 == 0 ? 'even' : 'odd'}}" ng-repeat="insight in postInsights.data | filter: { period: filterInsightsBy } : true track by $index">
+          <div class="col-xs-6 small">{{insight.description}}</div>
+          <div class="col-xs-6 small" ng-if="insight.values[insight.values.length - 1].value">
+            <table width="80%">
+              <tbody>
+              <tr ng-repeat="(key, value) in insight.values[insight.values.length - 1].value">
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-xs-6 small" ng-if="insight.values[insight.values.length - 1].value | isEmpty">0</div>
+          <div class="col-xs-6 small" ng-if="insight.values[insight.values.length - 1].value | isNumber">{{insight.values[insight.values.length - 1].value}}
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
