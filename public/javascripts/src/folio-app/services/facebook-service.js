@@ -16,20 +16,6 @@ function facebookService($http) {
 	};
 
 	return {
-		getPageInformation: function (pageId, pageAccessToken) {
-			return $http({
-				method: "GET",
-				url: baseUrl + pageId + "?access_token=" + pageAccessToken + "&fields=about,attire,bio,location,parking,hours,emails,website,description"
-			})
-		},
-
-		updatePageInformation: function (pageId, pageAccessToken, field, value) {
-			return $http({
-				method: "POST",
-				url: baseUrl + pageId + "?access_token=" + pageAccessToken + "&" + field + "=" + value
-			});
-		},
-
 		post: function (pageId, pageAccessToken, options) {
 
 			var url;
@@ -89,6 +75,20 @@ function facebookService($http) {
 		},
 
 		batchRequest: function (paToken, batch) {
+			return batchRequest(paToken, batch);
+		},
+		
+		getPageDetails: function(pageId, paToken) {
+			var batch = [
+				{
+					"method" : "GET",
+					"relative_url": pageId + "?access_token=" + paToken + "&fields=about,bio,location,hours,emails,name,category,likes,website,description"
+				},
+				{
+					"method" : "GET",
+					"relative_url": pageId + "/insights?access_token=" + paToken
+				}
+			];
 			return batchRequest(paToken, batch);
 		},
 

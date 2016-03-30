@@ -20,7 +20,7 @@ var _statusChangeCallback = function (response) {
 		// Logged into your app and Facebook.
 		if ((!util.readCookie('appState') || util.readCookie('appState') !== 'loggedIn')
 				&& !window.location.href.match(/logout/)) {
-			// util.post('/', {token: response.authResponse.accessToken});
+			util.post('/', {token: response.authResponse.accessToken});
 		}
 	}
 };

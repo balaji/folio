@@ -1,0 +1,89 @@
+<div class="row" ng-controller="PageDetailCtrl">
+  <div class="col-lg-6 col-md-12 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">Page Detail</div>
+      <div ng-show="!pageDetails">
+        <rd-loading></rd-loading>
+      </div>
+      <div class="panel-body" ng-show="pageDetails">
+        <div class="row" ng-if="pageDetails.name">
+          <div class="col-xs-4 bold">Name</div>
+          <div class="col-xs-8">{{pageDetails.name}}</div>
+        </div>
+        <div class="row" ng-if="pageDetails.category">
+          <div class="col-xs-4 bold">Category</div>
+          <div class="col-xs-8">{{pageDetails.category}}</div>
+        </div>
+        <div class="row" ng-if="pageDetails.bio">
+          <div class="col-xs-4 bold">Bio</div>
+          <div class="col-xs-8">{{pageDetails.bio}}</div>
+        </div>
+        <div class="row" ng-if="pageDetails.about">
+          <div class="col-xs-4 bold">About</div>
+          <div class="col-xs-8">{{pageDetails.about}}</div>
+        </div>
+        <div class="row" ng-if="pageDetails.description">
+          <div class="col-xs-4 bold">Description</div>
+          <div class="col-xs-8">{{pageDetails.description}}</div>
+        </div>
+        <div class="row" ng-if="pageDetails.website">
+          <div class="col-xs-4 bold">Website</div>
+          <div class="col-xs-8">{{pageDetails.website}}</div>
+        </div>
+        <div class="row" ng-if="pageDetails.emails">
+          <div class="col-xs-4 bold">Email</div>
+          <div class="col-xs-8">{{pageDetails.emails[0]}}</div>
+        </div>
+        <div class="row" ng-if="pageDetails.location">
+          <div class="col-xs-4 bold">Location</div>
+          <div class="col-xs-8">
+            <div ng-if="pageDetails.location.street">{{pageDetails.location.street}}</div>
+            <div ng-if="pageDetails.location.zip">{{pageDetails.location.zip}}</div>
+            <div ng-if="pageDetails.location.city">{{pageDetails.location.city}}</div>
+            <div ng-if="pageDetails.location.country">{{pageDetails.location.country}}</div>
+          </div>
+        </div>
+        <div class="row" ng-if="pageDetails.likes">
+          <div class="col-xs-4 bold">Likes</div>
+          <div class="col-xs-8">{{pageDetails.likes}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6 col-md-12 col-xs-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Page Insights
+
+        <select ng-model="filterInsightsBy">
+          <option value="day">Daily</option>
+          <option value="week">Week</option>
+          <option value="days_28">28 days</option>
+          <option value="lifetime">Lifetime</option>
+        </select>
+      </div>
+      <div ng-show="!pageInsights">
+        <rd-loading></rd-loading>
+      </div>
+      <div class="panel-body" ng-show="pageInsights">
+        <div class="row {{$index % 2 == 0 ? 'even' : 'odd'}}" ng-repeat="insight in pageInsights.data | filter: { period: filterInsightsBy } : true track by $index">
+          <div class="col-xs-4 bold">{{insight.title}}</div>
+          <div class="col-xs-8" ng-if="insight.values[insight.values.length - 1].value">
+            <table width="80%">
+              <tbody>
+              <tr ng-repeat="(key, value) in insight.values[insight.values.length - 1].value">
+                <td>{{key}}</td>
+                <td>{{value}}</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-xs-8" ng-if="insight.values[insight.values.length - 1].value | isEmpty">0</div>
+          <div class="col-xs-8" ng-if="insight.values[insight.values.length - 1].value | isNumber">{{insight.values[insight.values.length - 1].value}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

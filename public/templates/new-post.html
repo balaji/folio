@@ -2,31 +2,32 @@
   <div class="row">
     <div class="col-lg-6 col-md-12 col-xs-12">
       <rd-widget>
-        <rd-widget-header icon="fa-plus" title="New Post">
-        </rd-widget-header>
+        <rd-widget-header icon="fa-plus" title="New Post"></rd-widget-header>
         <rd-widget-body>
-          <div>
-            <textarea rows="5" name="message" ng-model="post.message" ng-disabled="disableControls"
-                      cols="60"></textarea>
+          <div class="form-row">
+            <textarea placeholder="Say something..." rows="5" name="message"
+                      ng-model="post.message" ng-disabled="disableControls"></textarea>
           </div>
-          <div>
-            <input type="file" name="source" fileread="post.source" value="">
+          <div class="form-row">
+            <input type="file" class="hidden" id="uploadFile" name="source" fileread="post.source" value="">
+            <label class="btn btn-xs btn-block btn-warning" for="uploadFile">Choose Photo or Video to upload</label>
           </div>
-          <div>
+
+          <div class="form-row">
+            <button class="btn btn-xs btn-primary" ng-disabled="disableControls" ng-click="postPost()">Post</button>
             <input type="checkbox" id="publishPost" ng-model="post.unpublish" ng-disabled="disableControls">
             <label for="publishPost"> Publish Later</label>
 
             <input type="checkbox" id="schedulePublish" ng-model="postInfo.schedulePublish" ng-show="post.unpublish"
                    ng-disabled="disableControls">
             <label for="schedulePublish" ng-show="post.unpublish"> Schedule Publish Time</label>
-
-            <div ng-show="postInfo.schedulePublish && post.unpublish">
-              <label for="scheduleDate"> Pick a time</label>
-              <adm-dtp id="scheduleDate" ng-model='postInfo.date'></adm-dtp>
-            </div>
-
           </div>
-          <button class="btn btn-xs btn-primary" ng-disabled="disableControls" ng-click="postPost()">Post</button>
+
+          <div class="form-row" ng-show="postInfo.schedulePublish && post.unpublish">
+            <label for="scheduleDate"> Pick a time</label>
+            <adm-dtp id="scheduleDate" ng-model='postInfo.date'></adm-dtp>
+          </div>
+
         </rd-widget-body>
       </rd-widget>
     </div>
