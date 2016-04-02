@@ -1,0 +1,17 @@
+<div class="panel">
+    <div class="panel-heading">
+        Likes
+    </div>
+    <div class="panel-body" ng-if="!likes">
+        <rd-loading></rd-loading>
+    </div>
+    <div class="panel-body" ng-if="likes">
+        <div style="margin: 5px 0" ng-repeat="person in likes.data">
+            <a target="_blank" ng-href="{{'https://facebook.com/' + person.id }}">
+                <img ng-src="{{'https://graph.facebook.com/v2.5/' + person.id + '/picture'}}" alt=""> {{person.name}}
+            </a>
+        </div>
+        <a class="clickable" ng-click="loadMore(likes.paging.next)" ng-if="likes.paging && likes.paging.next">Next</a>
+        <a class="clickable" ng-click="loadMore(likes.paging.previous)" ng-if="likes.paging && likes.paging.previous">Previous</a>
+    </div>
+</div>

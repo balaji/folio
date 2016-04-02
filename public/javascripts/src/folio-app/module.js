@@ -29,13 +29,21 @@
                 url: "/:page_id/settings",
                 templateUrl: "templates/page-detail.html"
             })
-            .state("edit_post", {
-                url: "/post/:post_id",
-                templateUrl: "templates/post-detail.html"
-            })
             .state("new_post", {
                 url: "/:page_id/post/new",
                 templateUrl: "templates/new-post.html"
+            })
+            .state("edit_post", {
+                url: "/:page_id/post/:post_id",
+                templateUrl: "templates/post-detail.html"
+            })
+            .state("post_insights", {
+                url: "/:page_id/post/:post_id/insights",
+                templateUrl: "templates/insights.html"
+            })
+            .state("page_insights", {
+                url: "/:page_id/insights",
+                templateUrl: "templates/insights.html"
             });
     }
 

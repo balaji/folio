@@ -13,16 +13,16 @@
         };
 
         return {
-            post: function (pageId, pageAccessToken, options) {
+            post: function (pageId, paToken, options) {
 
                 var url, fd, type, postInfo = null;
                 if (options.source) {
                     type = (options.source.type.indexOf("image") !== -1) ? "photos" : "videos";
-                    url = baseUrl + pageId + "/" + type + "?access_token=" + pageAccessToken;
+                    url = baseUrl + pageId + "/" + type + "?access_token=" + paToken;
                     fd = new FormData();
                     fd.append("source", options.source);
                 } else {
-                    url = baseUrl + pageId + "/feed?access_token=" + pageAccessToken;
+                    url = baseUrl + pageId + "/feed?access_token=" + paToken;
                 }
 
                 if (options.message) {
@@ -57,10 +57,10 @@
                 return $http(postInfo);
             },
 
-            publishPost: function (postId, pageAccessToken) {
+            publishPost: function (postId, paToken) {
                 return $http({
                     method: "POST",
-                    url: baseUrl + postId + "?is_published=true&access_token=" + pageAccessToken
+                    url: baseUrl + postId + "?is_published=true&access_token=" + paToken
                 });
             },
 
@@ -74,6 +74,20 @@
             batchRequest: function (paToken, batch) {
                 return batchRequest(paToken, batch);
             },
+            
+            getPostLikes: function(postId, paToken) {
+                return $http({
+                    method: "GET",
+                    url: baseUrl + postId + "/likes?access_token=" + paToken
+                });
+            },
+
+            getPostComments: function(postId, paToken) {
+                return $http({
+                    method: "GET",
+                    url: baseUrl + postId + "/comments?access_token=" + paToken
+                });
+            },
 
             getPostDetails: function (postId, paToken) {
                 var batch = [
@@ -83,7 +97,11 @@
                     },
                     {
                         "method": "GET",
-                        "relative_url": postId + "/insights?access_token=" + paToken
+                        "relative_url": postId + "/likes?summary=true&access_token=" + paToken
+                    },
+                    {
+                        "method": "GET",
+                        "relative_url": postId + "/comments?summary=true&filter=toplevel&access_token=" + paToken
                     }
                 ];
                 return batchRequest(paToken, batch);
@@ -97,34 +115,30 @@
                     },
                     {
                         "method": "GET",
-                        "relative_url": pageId + "/insights?access_token=" + paToken
+                        "relative_url": pageId + "/albums?access_token=" + paToken
                     }
                 ];
                 return batchRequest(paToken, batch);
             },
-
+            
             getAllPosts: function (pageId, paToken) {
                 var batch = [
                     {
                         "method": "GET",
-                        "relative_url": pageId + "/promotable_posts?is_published=false&amp;fields=id,message,created_time,status_type&limit=10"
+                        "relative_url": pageId + "/promotable_posts?is_published=false&amp;fields=id,message,created_time,status_type,icon&limit=10"
                     },
                     {
                         "method": "GET",
-                        "relative_url": pageId + "/posts?fields=id,message,updated_time,status_type&limit=10"
-                    },
-                    {
-                        "method": "GET",
-                        "relative_url": pageId + "/insights"
+                        "relative_url": pageId + "/posts?fields=id,message,updated_time,status_type,icon&limit=10"
                     }
                 ];
                 return batchRequest(paToken, batch);
             },
 
-            postInsights: function (postId, paToken) {
+            insights: function (objectId, paToken) {
                 return $http({
                     method: "GET",
-                    url: baseUrl + postId + "/insights?access_token=" + paToken
+                    url: baseUrl + objectId + "/insights?access_token=" + paToken
                 });
             }
         };

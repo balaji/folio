@@ -1,14 +1,33 @@
 (function () {
     "use strict";
-    function PostDetailCtrl($scope, $state, $cookieStore, facebookService, $sce) {
+    function PostDetailCtrl($scope, $rootScope, $state, $cookieStore, $uibModal, facebookService, $sce) {
         var postId = $state.params.post_id;
         var paToken = null;
         if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
             paToken = $cookieStore.get("pageAccessToken");
         }
 
+        if (!paToken) {
+            $state.go("index");
+            return;
+        }
+        
         $scope.trustSrc = function (src) {
             return $sce.trustAsResourceUrl(src);
+        };
+
+        $scope.showLikesModal = function() {
+          $uibModal.open({
+              templateUrl: "templates/likes-modal.html",
+              controller: 'LikesCtrl'
+          })
+        };
+        
+        $scope.showCommentsModal = function() {
+          $uibModal.open({
+              templateUrl: "templates/comments-modal.html",
+              controller: 'CommentsCtrl'
+          })
         };
 
         $scope.publish = function (postId) {
@@ -33,19 +52,18 @@
             });
         };
 
-        if (!paToken) {
-            $state.go("index");
-            return;
-        }
-        $scope.filterInsightsBy = "lifetime";
+        $scope.loadInsights = function () {
+            $state.go("post_insights", {post_id: postId, page_id: $state.params.page_id});
+        };
 
         facebookService.getPostDetails(postId, paToken).then(function (response) {
             $scope.postDetails = JSON.parse(response.data[0].body);
-            $scope.postInsights = JSON.parse(response.data[1].body);
+            $scope.likesCount = JSON.parse(response.data[1].body);
+            $scope.commentsCount = JSON.parse(response.data[2].body);
         });
     }
 
     angular
         .module("Folio")
-        .controller("PostDetailCtrl", ["$scope", "$state", "$cookieStore", "facebookService", "$sce", PostDetailCtrl]);
+        .controller("PostDetailCtrl", ["$scope", "$rootScope", "$state", "$cookieStore","$uibModal", "facebookService", "$sce", PostDetailCtrl]);
 }());

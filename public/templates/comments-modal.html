@@ -1,0 +1,24 @@
+<div class="panel">
+    <div class="panel-heading">
+        Comments
+    </div>
+    <div class="panel-body" ng-if="!comments">
+        <rd-loading></rd-loading>
+    </div>
+    <div class="panel-body" ng-if="comments">
+        <div class="row" style="margin: 5px 0" ng-repeat="comment in comments.data">
+            <div class="col-xs-3 small">
+                <a target="_blank" ng-href="{{'https://facebook.com/' + comment.from.id }}">
+                    <img width="50px" ng-src="{{'https://graph.facebook.com/v2.5/' + comment.from.id + '/picture'}}"
+                         alt="">
+                    <div> {{comment.from.name}}</div>
+                </a>
+            </div>
+            <div class="col-xs-8">
+                {{comment.message}}
+            </div>
+        </div>
+        <a class="clickable" ng-click="loadMore(likes.paging.next)" ng-if="likes.paging && likes.paging.next">Next</a>
+        <a class="clickable" ng-click="loadMore(likes.paging.previous)" ng-if="likes.paging && likes.paging.previous">Previous</a>
+    </div>
+</div>

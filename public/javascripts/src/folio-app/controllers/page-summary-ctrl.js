@@ -22,39 +22,44 @@
             });
         };
 
-        var addType = function (posts, type_name) {
-            posts.type = type_name;
+        var addType = function (posts, flag, dir, prevPosts) {
+            posts.type = flag;
+            if (prevPosts && prevPosts.count !== undefined) {
+                posts.count = dir == 'next' ? prevPosts.count + 1 : prevPosts.count - 1;
+            } else {
+                posts.count = 0;
+            }
+            posts.pageId = pageId;
             return posts;
+        };
+
+        var paginate = function (response, prevPosts, dir, flag) {
+            var returnObj;
+            if (!response.data.paging) {
+                returnObj = prevPosts;
+                if (dir === "prev") returnObj.paging.previous = null;
+                if (dir === "next") returnObj.paging.next = null;
+            } else {
+                returnObj = addType(response.data, flag, dir, prevPosts);
+            }
+            return returnObj;
         };
 
         $scope.loadMore = function (url, flag, dir) {
             var prevPubPosts, prevUnPubPosts;
             if (flag === "PUB") {
                 prevPubPosts = $scope.publishedPosts;
-                $scope.publishedPosts = null;
+                $scope.publishedPosts = null; //needed for loading indicator
+                $http.get(url).then(function (response) {
+                    $scope.publishedPosts = paginate(response, prevPubPosts, dir, flag);
+                });
             } else {
                 prevUnPubPosts = $scope.unPublishedPosts;
-                $scope.unPublishedPosts = null;
+                $scope.unPublishedPosts = null; //needed for loading indicator
+                $http.get(url).then(function (response) {
+                    $scope.unPublishedPosts = paginate(response, prevUnPubPosts, dir, flag);
+                });
             }
-            $http.get(url).then(function (response) {
-                if (flag === "PUB") {
-                    if (!response.data.paging) {
-                        $scope.publishedPosts = prevPubPosts;
-                        if (dir === "prev") $scope.publishedPosts.paging.previous = null;
-                        if (dir === "next") $scope.publishedPosts.paging.next = null;
-                    } else {
-                        $scope.publishedPosts = addType(response.data, "PUB");
-                    }
-                } else {
-                    if (!response.data.paging) {
-                        $scope.unPublishedPosts = prevUnPubPosts;
-                        if (dir === "prev") $scope.unPublishedPosts.paging.previous = null;
-                        if (dir === "next") $scope.unPublishedPosts.paging.next = null;
-                    } else {
-                        $scope.unPublishedPosts = addType(response.data, "UN_PUB");
-                    }
-                }
-            });
         };
 
         var countPosts = function () {
@@ -75,6 +80,7 @@
         var countMore = function (posts, flag) {
             if (flag === "PUB") $scope.totalPosts += posts.data.length;
             else $scope.totalUnPosts += posts.data.length;
+
             if (posts.data.length === 100) {
                 $http.get(posts.paging.next).then(function (response) {
                     countMore(response.data, flag);
