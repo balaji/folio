@@ -1,0 +1,4 @@
+public/javascripts/builds
+public/javascripts/components
+node_modules
+dump.rdb

@@ -1,0 +1,8 @@
+{
+  "globals": {
+    "angular": true,
+    "FB": true,
+    "require": true,
+    "exports": true
+  }
+}

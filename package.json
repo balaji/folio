@@ -23,6 +23,7 @@
     "webpack": "^1.12.14"
   },
   "devDependencies": {
+    "jshint": "^2.9.1",
     "nodemon": "^1.9.1"
   }
 }
