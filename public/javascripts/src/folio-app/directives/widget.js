@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 function rdWidget() {
     return {
         transclude: true,
         template: '<div class="widget" ng-transclude></div>',
-        restrict: 'EA'
+        restrict: "EA"
     };
 }
 
 angular
-    .module('Folio')
-    .directive('rdWidget', rdWidget);
+    .module("Folio")
+    .directive("rdWidget", rdWidget);
 

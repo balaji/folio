@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 function rdWidgetFooter() {
     return {
-        requires: '^rdWidget',
+        requires: "^rdWidget",
         transclude: true,
         template: '<div class="widget-footer" ng-transclude></div>',
-        restrict: 'E'
+        restrict: "E"
     };
 }
 angular
-    .module('Folio')
-    .directive('rdWidgetFooter', rdWidgetFooter);
+    .module("Folio")
+    .directive("rdWidgetFooter", rdWidgetFooter);
 

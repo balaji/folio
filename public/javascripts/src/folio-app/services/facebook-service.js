@@ -15,7 +15,7 @@ function facebookService($http) {
 
             var url, fd, type, postInfo = null;
             if (options.source) {
-                type = (options.source.type.indexOf('image') !== -1) ? "photos" : "videos";
+                type = (options.source.type.indexOf("image") !== -1) ? "photos" : "videos";
                 url = baseUrl + pageId + "/" + type + "?access_token=" + pageAccessToken;
                 fd = new FormData();
                 fd.append("source", options.source);
@@ -50,7 +50,7 @@ function facebookService($http) {
 
             if (fd) {
                 postInfo.data = fd;
-                postInfo.headers = {'Content-Type': undefined};
+                postInfo.headers = {"Content-Type": undefined};
             }
             return $http(postInfo);
         },
@@ -64,7 +64,7 @@ function facebookService($http) {
 
         deletePost: function (postId, paToken) {
             return $http({
-                method: 'DELETE',
+                method: "DELETE",
                 url: baseUrl + postId + "?access_token=" + paToken
             });
         },
@@ -121,8 +121,8 @@ function facebookService($http) {
 
         postInsights: function (postId, paToken) {
             return $http({
-                method: 'GET',
-                url: baseUrl + postId + '/insights?access_token=' + paToken
+                method: "GET",
+                url: baseUrl + postId + "/insights?access_token=" + paToken
             });
         }
     };

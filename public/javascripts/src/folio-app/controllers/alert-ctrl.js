@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 function AlertsCtrl($rootScope) {
     $rootScope.alerts = [];
@@ -20,6 +20,6 @@ function AlertsCtrl($rootScope) {
 }
 
 angular
-    .module('Folio')
-    .controller('AlertsCtrl', ['$rootScope', AlertsCtrl]);
+    .module("Folio")
+    .controller("AlertsCtrl", ["$rootScope", AlertsCtrl]);
 

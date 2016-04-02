@@ -1,14 +1,14 @@
-'use strict';
+"use strict";
 
 function NewPostCtrl($scope, $rootScope, $state, $cookieStore, facebookService) {
     var pageId = $state.params.page_id;
     var paToken = null;
-    if (angular.isDefined($cookieStore.get('pageAccessToken'))) {
-        paToken = $cookieStore.get('pageAccessToken');
+    if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
+        paToken = $cookieStore.get("pageAccessToken");
     }
 
     if (!paToken) {
-        $state.go('index');
+        $state.go("index");
         return;
     }
 
@@ -34,12 +34,12 @@ function NewPostCtrl($scope, $rootScope, $state, $cookieStore, facebookService) 
         }
 
         if (options.unpublish && $scope.postInfo.schedulePublish) {
-            if ($scope.postInfo.date === undefined || $scope.postInfo.date === '') {
+            if ($scope.postInfo.date === undefined || $scope.postInfo.date === "") {
                 $rootScope.addAlert("Please select a valid date to schedule publishing.", "danger");
                 return;
             }
 
-            var chosenDate = new Date($scope.postInfo.date)
+            var chosenDate = new Date($scope.postInfo.date);
             var sixMonthsFromNow = new Date();
             var tenMinutesFromNow = new Date();
             sixMonthsFromNow.setMonth(chosenDate.getMonth() + 6);
@@ -68,5 +68,5 @@ function NewPostCtrl($scope, $rootScope, $state, $cookieStore, facebookService) 
 }
 
 angular
-    .module('Folio')
-    .controller('NewPostCtrl', ['$scope', '$rootScope', '$state', '$cookieStore', 'facebookService', NewPostCtrl]);
+    .module("Folio")
+    .controller("NewPostCtrl", ["$scope", "$rootScope", "$state", "$cookieStore", "facebookService", NewPostCtrl]);

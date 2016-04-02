@@ -1,16 +1,14 @@
-'use strict';
-angular.module('Folio')
-    .controller('PageSummaryCtrl', ['$scope', '$state', '$http', '$cookieStore', 'facebookService', PageSummaryCtrl]);
+"use strict";
 
 function PageSummaryCtrl($scope, $state, $http, $cookieStore, facebookService) {
     var pageId = $state.params.page_id;
     var paToken = null;
-    if (angular.isDefined($cookieStore.get('pageAccessToken'))) {
-        paToken = $cookieStore.get('pageAccessToken');
+    if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
+        paToken = $cookieStore.get("pageAccessToken");
     }
 
     if (!paToken) {
-        $state.go('index');
+        $state.go("index");
         return;
     }
 
@@ -41,16 +39,16 @@ function PageSummaryCtrl($scope, $state, $http, $cookieStore, facebookService) {
             if (flag === "PUB") {
                 if (!response.data.paging) {
                     $scope.publishedPosts = prevPubPosts;
-                    if (dir === 'prev') $scope.publishedPosts.paging.previous = null;
-                    if (dir === 'next') $scope.publishedPosts.paging.next = null;
+                    if (dir === "prev") $scope.publishedPosts.paging.previous = null;
+                    if (dir === "next") $scope.publishedPosts.paging.next = null;
                 } else {
                     $scope.publishedPosts = addType(response.data, "PUB");
                 }
             } else {
                 if (!response.data.paging) {
                     $scope.unPublishedPosts = prevUnPubPosts;
-                    if (dir === 'prev') $scope.unPublishedPosts.paging.previous = null;
-                    if (dir === 'next') $scope.unPublishedPosts.paging.next = null;
+                    if (dir === "prev") $scope.unPublishedPosts.paging.previous = null;
+                    if (dir === "next") $scope.unPublishedPosts.paging.next = null;
                 } else {
                     $scope.unPublishedPosts = addType(response.data, "UN_PUB");
                 }
@@ -87,13 +85,17 @@ function PageSummaryCtrl($scope, $state, $http, $cookieStore, facebookService) {
     };
 
     $scope.newPost = function () {
-        $state.go('new_post', {page_id: pageId});
+        $state.go("new_post", {page_id: pageId});
     };
 
     $scope.settings = function () {
-        $state.go('page_settings', {page_id: pageId});
+        $state.go("page_settings", {page_id: pageId});
     };
 
     countPosts();
     loadAllPosts();
 }
+
+angular
+    .module("Folio")
+    .controller("PageSummaryCtrl", ["$scope", "$state", "$http", "$cookieStore", "facebookService", PageSummaryCtrl]);

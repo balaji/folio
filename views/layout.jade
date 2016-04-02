@@ -2,11 +2,11 @@ doctype html
 html
   head
     title= 'Folio - ' + title
-    link(rel='stylesheet', href='/stylesheets/login.css')
-    link(href='https://fonts.googleapis.com/css?family=Volkhov:700italic', rel='stylesheet', type='text/css')
-    script(type='text/javascript', src='/javascripts/builds/bundle.js')
+    link(rel="stylesheet", href="/stylesheets/login.css")
+    link(href="https://fonts.googleapis.com/css?family=Volkhov:700italic", rel="stylesheet", type="text/css")
+    script(type="text/javascript", src="/javascripts/builds/bundle.js")
   body
-    #appId(style='display:none')=  settings.env === 'development' ? '858911334219612' : '858854500891962'
+    #appId(style="display:none")=  settings.env === "development" ? "858911334219612" : "858854500891962"
     #fb-root
     script.
       (function (d, s, id) {
@@ -16,13 +16,13 @@ html
         js.id = id;
         js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=" + document.getElementById("appId").innerText;
         fjs.parentNode.insertBefore(js, fjs);
-      }(document, 'script', 'facebook-jssdk'));
+      }(document, "script", "facebook-jssdk"));
 
       window.fbAsyncInit = function () {
         FB.init({
-          appId: document.getElementById('appId').innerText,
+          appId: document.getElementById("appId").innerText,
           xfbml: false,
-          version: 'v2.5',
+          version: "v2.5",
           status: true,
           cookie: true
         });

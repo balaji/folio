@@ -1,9 +1,9 @@
-'use strict';
+"use strict";
 
 function BreadCrumbCtrl($scope, $rootScope) {
     $scope.crumbsLink = null;
 
-    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    $rootScope.$on("$stateChangeStart", function (event, toState, toParams) {
         $scope.subCrumbs = null;
         var pageId;
         switch (toState.name) {
@@ -13,24 +13,24 @@ function BreadCrumbCtrl($scope, $rootScope) {
             break;
 
         case "edit_post":
-            pageId = toParams.post_id.split('_')[0];
+            pageId = toParams.post_id.split("_")[0];
             $scope.crumbs = document.getElementById(pageId).value;
-            $scope.crumbsLink = '#/' + pageId;
-            $scope.subCrumbs = 'Post Details';
+            $scope.crumbsLink = "#/" + pageId;
+            $scope.subCrumbs = "Post Details";
             break;
 
         case "new_post":
             pageId = toParams.page_id;
             $scope.crumbs = document.getElementById(pageId).value;
-            $scope.crumbsLink = '#/' + pageId;
-            $scope.subCrumbs = 'New Post';
+            $scope.crumbsLink = "#/" + pageId;
+            $scope.subCrumbs = "New Post";
             break;
 
         case "page_settings":
             pageId = toParams.page_id;
             $scope.crumbs = document.getElementById(pageId).value;
-            $scope.crumbsLink = '#/' + pageId;
-            $scope.subCrumbs = 'Page Details';
+            $scope.crumbsLink = "#/" + pageId;
+            $scope.subCrumbs = "Page Details";
             break;
 
         default:
@@ -40,5 +40,5 @@ function BreadCrumbCtrl($scope, $rootScope) {
 }
 
 angular
-    .module('Folio')
-    .controller('BreadCrumbCtrl', ['$scope', '$rootScope', BreadCrumbCtrl]);
+    .module("Folio")
+    .controller("BreadCrumbCtrl", ["$scope", "$rootScope", BreadCrumbCtrl]);

@@ -1,7 +1,7 @@
 "use strict";
 
 function jQueryService() {
-    return require('../../../components/jquery/dist/jquery.min.js');
+    return require("../../../components/jquery/dist/jquery.min.js");
 }
 
 angular

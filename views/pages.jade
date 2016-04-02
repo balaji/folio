@@ -1,36 +1,36 @@
 doctype html
-html(lang='en', ng-app='Folio')
+html(lang="en", ng-app="Folio")
   head
-    meta(charset='UTF-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(charset="UTF-8")
+    meta(name="viewport", content='width=device-width, initial-scale=1')
     title Folio - Pages
     // STYLES
-    link(href='/javascripts/components/bootstrap/dist/css/bootstrap.min.css', rel='stylesheet')
-    link(href='/javascripts/components/font-awesome/css/font-awesome.min.css', rel='stylesheet')
-    link(href='/javascripts/components/rdash-ui/dist/css/rdash.min.css', rel='stylesheet')
-    link(href='/javascripts/components/adm-dtp/dist/ADM-dateTimePicker.css', rel='stylesheet')
+    link(href="/javascripts/components/bootstrap/dist/css/bootstrap.min.css", rel="stylesheet")
+    link(href="/javascripts/components/font-awesome/css/font-awesome.min.css", rel="stylesheet")
+    link(href="/javascripts/components/rdash-ui/dist/css/rdash.min.css", rel="stylesheet")
+    link(href="/javascripts/components/adm-dtp/dist/ADM-dateTimePicker.css", rel="stylesheet")
 
-    link(href='/stylesheets/page.css', rel='stylesheet')
+    link(href="/stylesheets/page.css", rel="stylesheet")
 
-    script(type='text/javascript', src='https://connect.facebook.net/en_US/sdk.js')
-    script(type='text/javascript', src='/javascripts/builds/bundle.js')
-  body(ng-controller='MasterCtrl')
-    #page-wrapper(ng-class="{'open': toggle}", ng-cloak='')
+    script(type="text/javascript", src="https://connect.facebook.net/en_US/sdk.js")
+    script(type="text/javascript", src="/javascripts/builds/bundle.js")
+  body(ng-controller="MasterCtrl")
+    #page-wrapper(ng-class="{'open': toggle}", ng-cloak="")
       // Sidebar
       #sidebar-wrapper
         ul.sidebar
           li.sidebar-main
-            a(ng-click='toggleSidebar()')
+            a(ng-click="toggleSidebar()")
               | Folio
               span.menu-icon.glyphicon.glyphicon-transfer
           li.sidebar-list
-            a(href='#/')
+            a(href="#/")
               | Dashboard
               span.menu-icon.fa.fa-line-chart
           li.sidebar-title
             span PAGES
           each page, index in pages
-            input(type='hidden', id=page.id, data-page-token=page.access_token, value=page.name, class="fb-pages")
+            input(type="hidden", id=page.id, data-page-token=page.access_token, value=page.name, class="fb-pages")
             li.sidebar-list
               a(ng-click="loadPage($event)",
               data-page-id=page.id,
@@ -39,24 +39,24 @@ html(lang='en', ng-app='Folio')
                 span.menu-icon.fa.fa-align-justify
         .sidebar-footer
           .col-xs-6
-            a(href='#', target='_blank')
+            a(href="#", target="_blank")
               | About
           .col-xs-6
-            a(href='#')
+            a(href="#")
               | Support
       #content-wrapper
         .page-content
           .row.header
             .col-xs-12
               .user.pull-right
-                .item.dropdown(uib-dropdown='')
-                  a.dropdown-toggle(href='#', uib-dropdown-toggle='')
+                .item.dropdown(uib-dropdown="")
+                  a.dropdown-toggle(href="#", uib-dropdown-toggle="")
                     img(src="https://graph.facebook.com/" + profile.id + "/picture")
                   ul.dropdown-menu.dropdown-menu-right
                     li.dropdown-header= profile.name
                     li.divider
                     li.link
-                      a(href='/logout')
+                      a(href="/logout")
                         | Logout                
               .meta(ng-controller="BreadCrumbCtrl")
                 .page
@@ -66,7 +66,7 @@ html(lang='en', ng-app='Folio')
                   span(ng-show="crumbsLink")  /  
                   a(ng-show="crumbsLink" ng-href="{{crumbsLink}}") {{crumbs}}
                   span(ng-show="subCrumbs")  / {{subCrumbs}}                  
-          .row.alerts-container(data-ng-controller='AlertsCtrl', data-ng-show='alerts.length')
+          .row.alerts-container(data-ng-controller="AlertsCtrl", data-ng-show="alerts.length")
             .col-xs-12
-              uib-alert(ng-repeat='alert in alerts', type='{{alert.type}}', close='closeAlert($index)') {{alert.msg}}          
-          div(ui-view='')
+              uib-alert(ng-repeat='alert in alerts', type="{{alert.type}}", close="closeAlert($index)") {{alert.msg}}
+          div(ui-view="")

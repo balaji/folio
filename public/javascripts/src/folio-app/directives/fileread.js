@@ -1,7 +1,4 @@
-angular
-    .module('Folio')
-    .directive("fileread", [fileread]);
-
+"use strict";
 function fileread() {
     return {
         scope: {
@@ -16,3 +13,7 @@ function fileread() {
         }
     }
 }
+
+angular
+    .module("Folio")
+    .directive("fileread", [fileread]);

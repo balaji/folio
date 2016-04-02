@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 function MasterCtrl($scope, $state, facebookService, $, $cookieStore) {
     var mobileView = 992;
 
@@ -30,8 +30,8 @@ function MasterCtrl($scope, $state, facebookService, $, $cookieStore) {
 
     $scope.$watch($scope.getWidth, function (newValue, oldValue) {
         if (newValue >= mobileView) {
-            if (angular.isDefined($cookieStore.get('toggle'))) {
-                $scope.toggle = !$cookieStore.get('toggle') ? false : true;
+            if (angular.isDefined($cookieStore.get("toggle"))) {
+                $scope.toggle = !$cookieStore.get("toggle") ? false : true;
             } else {
                 $scope.toggle = true;
             }
@@ -42,15 +42,15 @@ function MasterCtrl($scope, $state, facebookService, $, $cookieStore) {
 
     $scope.toggleSidebar = function () {
         $scope.toggle = !$scope.toggle;
-        $cookieStore.put('toggle', $scope.toggle);
+        $cookieStore.put("toggle", $scope.toggle);
     };
 
     $scope.loadPage = function ($event) {
         var $element = angular.element($event.currentTarget)[0];
-        var pageId = $element.attributes['data-page-id'].value;
-        var pageAccessToken = $element.attributes['data-page-token'].value;
-        $cookieStore.put('pageAccessToken', pageAccessToken);
-        $state.go('page', {page_id: pageId});
+        var pageId = $element.attributes["data-page-id"].value;
+        var pageAccessToken = $element.attributes["data-page-token"].value;
+        $cookieStore.put("pageAccessToken", pageAccessToken);
+        $state.go("page", {page_id: pageId});
     };
 
     window.onresize = function () {
@@ -59,6 +59,6 @@ function MasterCtrl($scope, $state, facebookService, $, $cookieStore) {
 }
 
 angular
-    .module('Folio')
-    .controller('MasterCtrl', ['$scope', '$state', 'facebookService', 'jQueryService', '$cookieStore', MasterCtrl]);
+    .module("Folio")
+    .controller("MasterCtrl", ["$scope", "$state", "facebookService", "jQueryService", "$cookieStore", MasterCtrl]);
 
