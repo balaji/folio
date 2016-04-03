@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    function PageDetailCtrl($scope, $state, $cookieStore, facebookService, $) {
+    function PageDetailCtrl($scope, $state, $cookieStore, facebookService, $, $uibModal) {
         var pageId = $state.params.page_id;
         var paToken = null;
         if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
@@ -12,6 +12,13 @@
             return;
         }
 
+        $scope.showLikesModal = function() {
+            $uibModal.open({
+                templateUrl: "templates/likes-modal.html",
+                controller: 'LikesCtrl'
+            })
+        };
+        
         $scope.loadInsights = function () {
             $state.go("page_insights", {page_id: pageId});
         };
@@ -43,6 +50,6 @@
     angular
         .module("Folio")
         .controller("PageDetailCtrl",
-            ["$scope", "$state", "$cookieStore", "facebookService", "jQueryService",
+            ["$scope", "$state", "$cookieStore", "facebookService", "jQueryService", "$uibModal",
                 PageDetailCtrl]);
 }());

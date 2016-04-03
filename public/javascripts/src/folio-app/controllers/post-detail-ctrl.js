@@ -2,6 +2,7 @@
     "use strict";
     function PostDetailCtrl($scope, $rootScope, $state, $cookieStore, $uibModal, facebookService, $sce) {
         var postId = $state.params.post_id;
+        var pageId = $state.params.page_id;
         var paToken = null;
         if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
             paToken = $cookieStore.get("pageAccessToken");
@@ -36,7 +37,7 @@
             facebookService.publishPost(postId, paToken).then(function (response) {
                 if (response.data) {
                     $scope.addAlert("Post published!!!", "success");
-                    $state.go("page", {page_id: postId.split("_")[0]});
+                    $state.go("page", {page_id: pageId});
                 }
             });
         };
@@ -47,7 +48,7 @@
             facebookService.deletePost(postId, paToken).then(function (response) {
                 if (response.data) {
                     $scope.addAlert("Post deleted!!!", "success");
-                    $state.go("page", {page_id: postId.split("_")[0]});
+                    $state.go("page", {page_id: pageId});
                 }
             });
         };
@@ -60,6 +61,8 @@
             $scope.postDetails = JSON.parse(response.data[0].body);
             $scope.likesCount = JSON.parse(response.data[1].body);
             $scope.commentsCount = JSON.parse(response.data[2].body);
+            $scope.attachments = JSON.parse(response.data[3].body).data[0];
+            console.log($scope.postDetails);
         });
     }
 

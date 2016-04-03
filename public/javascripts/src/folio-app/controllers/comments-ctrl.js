@@ -21,7 +21,6 @@
 
         facebookService.getPostComments(postId, paToken).then(function (response) {
             $scope.comments = response.data;
-            console.log(response.data);
         });
     }
 

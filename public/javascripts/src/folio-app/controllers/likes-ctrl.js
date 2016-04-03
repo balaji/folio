@@ -1,7 +1,10 @@
 (function () {
     "use strict";
     function LikesCtrl($scope, $state, $cookieStore, $http, facebookService) {
-        var postId = $state.params.post_id;
+        var objectId = $state.params.post_id;
+        if(!objectId) {
+            objectId = $state.params.page_id;
+        }
         var paToken = null;
         if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
             paToken = $cookieStore.get("pageAccessToken");
@@ -19,7 +22,7 @@
             });
         };
 
-        facebookService.getPostLikes(postId, paToken).then(function (response) {
+        facebookService.getLikes(objectId, paToken).then(function (response) {
             $scope.likes = response.data;
         });
     }

@@ -75,7 +75,7 @@
                 return batchRequest(paToken, batch);
             },
             
-            getPostLikes: function(postId, paToken) {
+            getLikes: function(postId, paToken) {
                 return $http({
                     method: "GET",
                     url: baseUrl + postId + "/likes?access_token=" + paToken
@@ -93,7 +93,7 @@
                 var batch = [
                     {
                         "method": "GET",
-                        "relative_url": postId + "?access_token=" + paToken + "&fields=from,is_published,link,message,picture,name,description,source,type,shares,caption,status_type"
+                        "relative_url": postId + "?access_token=" + paToken + "&fields=from,is_published,link,message,updated_time,picture,name,description,source,type,shares,caption,status_type"
                     },
                     {
                         "method": "GET",
@@ -102,6 +102,10 @@
                     {
                         "method": "GET",
                         "relative_url": postId + "/comments?summary=true&filter=toplevel&access_token=" + paToken
+                    },
+                    {
+                        "method": "GET",
+                        "relative_url": postId + "/attachments?access_token=" + paToken
                     }
                 ];
                 return batchRequest(paToken, batch);

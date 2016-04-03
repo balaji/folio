@@ -35,7 +35,8 @@ html(lang="en", ng-app="Folio")
                             a(ng-click="loadPage($event)",
                             data-page-id=page.id,
                             data-page-token=page.access_token,
-                            title=page.name)= trimLeading(page.name, 17)
+                            title=page.name,
+                            class="clickable")= trimLeading(page.name, 17)
                                 span.menu-icon.fa.fa-align-justify
                 .sidebar-footer
                     .col-xs-6
