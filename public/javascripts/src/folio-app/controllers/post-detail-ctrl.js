@@ -62,7 +62,6 @@
             $scope.likesCount = JSON.parse(response.data[1].body);
             $scope.commentsCount = JSON.parse(response.data[2].body);
             $scope.attachments = JSON.parse(response.data[3].body).data[0];
-            console.log($scope.postDetails);
         });
     }
 
