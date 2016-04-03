@@ -11,13 +11,6 @@
             $state.go("index");
             return;
         }
-
-        $scope.showLikesModal = function() {
-            $uibModal.open({
-                templateUrl: "templates/likes-modal.html",
-                controller: 'LikesCtrl'
-            })
-        };
         
         $scope.loadInsights = function () {
             $state.go("page_insights", {page_id: pageId});

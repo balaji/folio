@@ -6,6 +6,8 @@
     require("../../components/angular-cookies/angular-cookies.min");
     require("../../components/angular-ui-router/release/angular-ui-router.min");
     require("../../components/adm-dtp/dist/ADM-dateTimePicker.min");
+    require("../../components/Chart.js/Chart.min");
+    require("../../components/angular-chart.js/dist/angular-chart.min");
 
     function config($stateProvider, $urlRouterProvider, ADMdtpProvider) {
         ADMdtpProvider.setOptions({
@@ -47,6 +49,6 @@
             });
     }
 
-    angular.module("Folio", ["ui.bootstrap", "ui.router", "ngCookies", "ADM-dateTimePicker"])
+    angular.module("Folio", ["ui.bootstrap", "ui.router", "ngCookies", "ADM-dateTimePicker", "chart.js"])
         .config(["$stateProvider", "$urlRouterProvider", "ADMdtpProvider", config]);
 }());

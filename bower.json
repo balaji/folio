@@ -16,6 +16,7 @@
     "font-awesome": "~4.5.0",
     "angular-ui-bootstrap-datetimepicker": "^1.2.4",
     "adm-dtp": "*",
-    "dateformat": "^0.4.1"
+    "dateformat": "^0.4.1",
+    "angular-chart.js": "^0.9.0"
   }
 }
