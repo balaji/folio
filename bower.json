@@ -8,7 +8,7 @@
   ],
   "dependencies": {
     "rdash-ui": "1.0.*",
-    "angular": "~1.5.0",
+    "angular": "~1.4.10",
     "angular-cookies": "~1.5.0",
     "angular-bootstrap": "~1.0.3",
     "angular-ui-router": "^0.2.15",
@@ -18,5 +18,8 @@
     "adm-dtp": "*",
     "dateformat": "^0.4.1",
     "angular-chart.js": "^0.9.0"
+  },
+  "resolutions": {
+    "angular": "~1.4.10"
   }
 }
