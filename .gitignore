@@ -1,5 +1,4 @@
 node_modules
-public/javascripts/builds
 public/javascripts/components
 dump.rdb
 .env
