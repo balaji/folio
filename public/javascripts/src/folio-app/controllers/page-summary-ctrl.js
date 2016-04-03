@@ -25,7 +25,7 @@
         var addType = function (posts, flag, dir, prevPosts) {
             posts.type = flag;
             if (prevPosts && prevPosts.count !== undefined) {
-                posts.count = dir == 'next' ? prevPosts.count + 1 : prevPosts.count - 1;
+                posts.count = dir == "next" ? prevPosts.count + 1 : prevPosts.count - 1;
             } else {
                 posts.count = 0;
             }

@@ -11,7 +11,7 @@
         if (req.cookies.appState === "loggedIn") {
             res.redirect("/pages");
         } else {
-            res.render("index", {title: "Home"});
+            res.render("index", {title: "Home", config: config});
         }
     });
 
@@ -19,7 +19,7 @@
         req.session.destroy(function () {
             req.session = null;
             res.cookie("appState", "loggedOut", {maxAge: 900000, httpOnly: false});
-            res.render("index", {title: "Home"});
+            res.render("index", {title: "Home", config: config});
         });
     });
 
@@ -39,7 +39,6 @@
                 return;
             }
 
-            // var expires = data.expires ? data.expires : 0;
             req.session.llToken = data.access_token;
             res.cookie("appState", "loggedIn", {maxAge: 900000, httpOnly: false});
             res.redirect("/pages");

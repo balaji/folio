@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    function PostDetailCtrl($scope, $rootScope, $state, $cookieStore, $uibModal, facebookService, $sce) {
+    function PostDetailCtrl($scope, $state, $cookieStore, $uibModal, facebookService, $sce) {
         var postId = $state.params.post_id;
         var pageId = $state.params.page_id;
         var paToken = null;
@@ -20,15 +20,15 @@
         $scope.showLikesModal = function() {
           $uibModal.open({
               templateUrl: "templates/likes-modal.html",
-              controller: 'LikesCtrl'
-          })
+              controller: "LikesCtrl"
+          });
         };
         
         $scope.showCommentsModal = function() {
           $uibModal.open({
               templateUrl: "templates/comments-modal.html",
-              controller: 'CommentsCtrl'
-          })
+              controller: "CommentsCtrl"
+          });
         };
 
         $scope.publish = function (postId) {
@@ -67,5 +67,5 @@
 
     angular
         .module("Folio")
-        .controller("PostDetailCtrl", ["$scope", "$rootScope", "$state", "$cookieStore","$uibModal", "facebookService", "$sce", PostDetailCtrl]);
+        .controller("PostDetailCtrl", ["$scope", "$state", "$cookieStore","$uibModal", "facebookService", "$sce", PostDetailCtrl]);
 }());

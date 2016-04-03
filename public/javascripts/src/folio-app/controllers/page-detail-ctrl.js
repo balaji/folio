@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    function PageDetailCtrl($scope, $state, $cookieStore, facebookService, $, $uibModal) {
+    function PageDetailCtrl($scope, $state, $cookieStore, facebookService, $) {
         var pageId = $state.params.page_id;
         var paToken = null;
         if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
@@ -43,6 +43,5 @@
     angular
         .module("Folio")
         .controller("PageDetailCtrl",
-            ["$scope", "$state", "$cookieStore", "facebookService", "jQueryService", "$uibModal",
-                PageDetailCtrl]);
+            ["$scope", "$state", "$cookieStore", "facebookService", "jQueryService", PageDetailCtrl]);
 }());

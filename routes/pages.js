@@ -32,8 +32,7 @@
 
                 res.render("pages", {
                     pages: response.data,
-                    profile: profile,
-                    config: config
+                    profile: profile
                 });
             });
         });

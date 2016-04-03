@@ -4,7 +4,7 @@
     function BreadCrumbCtrl($scope, $rootScope) {
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams) {
             
-            $scope.crumbs = [{name: 'Folio', link: "#/"}];
+            $scope.crumbs = [{name: "Folio", link: "#/"}];
 
             switch (toState.name) {
                 case "edit_post":
@@ -64,7 +64,7 @@
                     break;
 
                 default:
-                    $scope.crumbs = [{name: 'Folio'}];
+                    $scope.crumbs = [{name: "Folio"}];
             }
         });
     }

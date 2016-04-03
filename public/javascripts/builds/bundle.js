@@ -33996,7 +33996,7 @@
 	    function BreadCrumbCtrl($scope, $rootScope) {
 	        $rootScope.$on("$stateChangeStart", function (event, toState, toParams) {
 	            
-	            $scope.crumbs = [{name: 'Folio', link: "#/"}];
+	            $scope.crumbs = [{name: "Folio", link: "#/"}];
 
 	            switch (toState.name) {
 	                case "edit_post":
@@ -34056,7 +34056,7 @@
 	                    break;
 
 	                default:
-	                    $scope.crumbs = [{name: 'Folio'}];
+	                    $scope.crumbs = [{name: "Folio"}];
 	            }
 	        });
 	    }
@@ -34121,12 +34121,7 @@
 	        }
 
 	        $scope.filterInsightsBy = "lifetime";
-	        var objectId;
-	        if ($state.params.post_id) {
-	            objectId = $state.params.post_id;
-	        } else {
-	            objectId = $state.params.page_id;
-	        }
+	        var objectId = $state.params.post_id ? $state.params.post_id : $state.params.page_id;
 
 	        facebookService.insights(objectId, paToken).then(function (response) {
 	            $scope.insights = response.data;
@@ -34135,8 +34130,8 @@
 	                var values = datum.values;
 	                if (values.length > 0) {
 	                    var recentValue = values[values.length - 1];
-	                    if (recentValue.value && typeof recentValue.value === 'object') {
-	                        delete recentValue.value['total']; //removing aggregate data for charts.
+	                    if (recentValue.value && typeof recentValue.value === "object") {
+	                        delete recentValue.value.total; //removing aggregate data for charts.
 	                        $scope.insights.data[i].keys = Object.keys(recentValue.value);
 	                        var objValues = [];
 	                        var total = 0;
@@ -34151,7 +34146,7 @@
 	                            }
 	                        }
 	                        //avoiding the case where the chart has all 0s resulting in no chart.
-	                        if(total > 0) {
+	                        if (total > 0) {
 	                            $scope.insights.data[i].objValues = objValues;
 	                        }
 	                    }
@@ -34172,21 +34167,19 @@
 	(function () {
 	    "use strict";
 	    function LikesCtrl($scope, $state, $cookieStore, $http, facebookService) {
-	        var objectId = $state.params.post_id;
-	        if(!objectId) {
-	            objectId = $state.params.page_id;
-	        }
+	        var objectId = $state.params.post_id ? $state.params.post_id : $state.params.page_id;
+
 	        var paToken = null;
 	        if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
 	            paToken = $cookieStore.get("pageAccessToken");
 	        }
-	        
+
 	        if (!paToken) {
 	            $state.go("index");
 	            return;
 	        }
-	        
-	        $scope.loadMore = function(url) {
+
+	        $scope.loadMore = function (url) {
 	            $scope.likes = null;
 	            $http.get(url).then(function (response) {
 	                $scope.likes = response.data;
@@ -34200,7 +34193,7 @@
 
 	    angular
 	        .module("Folio")
-	        .controller("LikesCtrl", 
+	        .controller("LikesCtrl",
 	            ["$scope", "$state", "$cookieStore", "$http", "facebookService", LikesCtrl]);
 	})();
 
@@ -34361,7 +34354,7 @@
 
 	(function () {
 	    "use strict";
-	    function PageDetailCtrl($scope, $state, $cookieStore, facebookService, $, $uibModal) {
+	    function PageDetailCtrl($scope, $state, $cookieStore, facebookService, $) {
 	        var pageId = $state.params.page_id;
 	        var paToken = null;
 	        if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
@@ -34404,8 +34397,7 @@
 	    angular
 	        .module("Folio")
 	        .controller("PageDetailCtrl",
-	            ["$scope", "$state", "$cookieStore", "facebookService", "jQueryService", "$uibModal",
-	                PageDetailCtrl]);
+	            ["$scope", "$state", "$cookieStore", "facebookService", "jQueryService", PageDetailCtrl]);
 	}());
 
 
@@ -34440,7 +34432,7 @@
 	        var addType = function (posts, flag, dir, prevPosts) {
 	            posts.type = flag;
 	            if (prevPosts && prevPosts.count !== undefined) {
-	                posts.count = dir == 'next' ? prevPosts.count + 1 : prevPosts.count - 1;
+	                posts.count = dir == "next" ? prevPosts.count + 1 : prevPosts.count - 1;
 	            } else {
 	                posts.count = 0;
 	            }
@@ -34530,7 +34522,7 @@
 
 	(function () {
 	    "use strict";
-	    function PostDetailCtrl($scope, $rootScope, $state, $cookieStore, $uibModal, facebookService, $sce) {
+	    function PostDetailCtrl($scope, $state, $cookieStore, $uibModal, facebookService, $sce) {
 	        var postId = $state.params.post_id;
 	        var pageId = $state.params.page_id;
 	        var paToken = null;
@@ -34550,15 +34542,15 @@
 	        $scope.showLikesModal = function() {
 	          $uibModal.open({
 	              templateUrl: "templates/likes-modal.html",
-	              controller: 'LikesCtrl'
-	          })
+	              controller: "LikesCtrl"
+	          });
 	        };
 	        
 	        $scope.showCommentsModal = function() {
 	          $uibModal.open({
 	              templateUrl: "templates/comments-modal.html",
-	              controller: 'CommentsCtrl'
-	          })
+	              controller: "CommentsCtrl"
+	          });
 	        };
 
 	        $scope.publish = function (postId) {
@@ -34597,7 +34589,7 @@
 
 	    angular
 	        .module("Folio")
-	        .controller("PostDetailCtrl", ["$scope", "$rootScope", "$state", "$cookieStore","$uibModal", "facebookService", "$sce", PostDetailCtrl]);
+	        .controller("PostDetailCtrl", ["$scope", "$state", "$cookieStore","$uibModal", "facebookService", "$sce", PostDetailCtrl]);
 	}());
 
 
