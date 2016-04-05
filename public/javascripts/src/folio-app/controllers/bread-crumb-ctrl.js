@@ -1,10 +1,11 @@
 /* jshint browser: true */
 (function () {
     "use strict";
-    function BreadCrumbCtrl($scope, $rootScope) {
+    function BreadCrumbCtrl($scope, $rootScope, $) {
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams) {
             
             $scope.crumbs = [{name: "Folio", link: "#/"}];
+            $("li.sidebar-list").removeClass("active");
 
             switch (toState.name) {
                 case "edit_post":
@@ -20,9 +21,11 @@
 
             switch (toState.name) {
                 case "page":
+                    var pageId = toParams.page_id;
                     $scope.crumbs.push({
-                        name: document.getElementById(toParams.page_id).value
+                        name: document.getElementById(pageId).value
                     });
+                    $("a[data-page-id='" + pageId + "']").parent().addClass("active");
                     break;
 
                 case "edit_post":
@@ -65,11 +68,12 @@
 
                 default:
                     $scope.crumbs = [{name: "Folio"}];
+                    $("#dashboard-item").addClass("active");
             }
         });
     }
 
     angular
         .module("Folio")
-        .controller("BreadCrumbCtrl", ["$scope", "$rootScope", BreadCrumbCtrl]);
+        .controller("BreadCrumbCtrl", ["$scope", "$rootScope", "jQueryService", BreadCrumbCtrl]);
 }());
