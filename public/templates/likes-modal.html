@@ -14,7 +14,7 @@
         </a>
     </div>
 </div>
-<div class="modal-footer" ng-if="likes.paging && likes.paging.next || likes.paging && likes.paging.previous">
-    <a class="clickable" ng-click="loadMore(likes.paging.next)" ng-if="likes.paging && likes.paging.next">Next</a>
-    <a class="clickable" ng-click="loadMore(likes.paging.previous)" ng-if="likes.paging && likes.paging.previous">Previous</a>
+<div class="modal-footer" ng-if="likes.paging && (likes.paging.next || likes.paging.previous)">
+    <a class="clickable" ng-click="loadMore(likes.paging.previous)" ng-if="likes.paging.previous">Previous</a>
+    <a class="clickable" ng-click="loadMore(likes.paging.next)" ng-if="likes.paging.next">Next</a>
 </div>

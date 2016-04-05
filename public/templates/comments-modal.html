@@ -11,8 +11,7 @@
     <div class="row" style="margin: 5px 0" ng-repeat="comment in comments.data">
         <div class="col-xs-3 small">
             <a target="_blank" ng-href="{{'https://facebook.com/' + comment.from.id }}">
-                <img width="50px" ng-src="{{'https://graph.facebook.com/v2.5/' + comment.from.id + '/picture'}}"
-                     alt="">
+                <img width="50px" ng-src="{{'https://graph.facebook.com/v2.5/' + comment.from.id + '/picture'}}">
                 <div> {{comment.from.name}}</div>
             </a>
         </div>
@@ -22,8 +21,6 @@
     </div>
 </div>
 <div class="modal-footer" ng-if="comments.paging && (comments.paging.previous || comments.paging.next)">
-    <a class="clickable" ng-click="loadMore(comments.paging.next)"
-       ng-if="comments.paging && comments.paging.next">Next</a>
-    <a class="clickable" ng-click="loadMore(comments.paging.previous)"
-       ng-if="comments.paging && comments.paging.previous">Previous</a>
+    <a class="clickable" ng-click="loadMore(comments.paging.previous)" ng-if="comments.paging.previous">Previous</a>
+    <a class="clickable" ng-click="loadMore(comments.paging.next)" ng-if="comments.paging.next">Next</a>
 </div>

@@ -3,7 +3,6 @@
     "use strict";
 
     function facebookService($http, $cookieStore) {
-        var baseUrl = "https://graph.facebook.com/v2.5/", batchRequest;
 
         var errorFn = function (error) {
             console.log(error);
@@ -13,8 +12,9 @@
         var successFn = function (response) {
             return response;
         };
-
-        batchRequest = function (paToken, batch) {
+        
+        var baseUrl = "https://graph.facebook.com/v2.5/";
+        var batchRequest = function (paToken, batch) {
             return $http({
                 method: "POST",
                 url: baseUrl,
