@@ -12,7 +12,7 @@ html(ng-app="Folio")
         script(type="text/javascript", src="https://connect.facebook.net/en_US/sdk.js")
         script(type="text/javascript", src="/javascripts/builds/bundle.js")
     body(ng-controller="LoginCtrl")
-        .row
+        .row(class="volkhov")
             .col-md-4
                 input(type='hidden', id='appId', name='appId', value=config.appId)
                 h1 Folio

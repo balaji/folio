@@ -1,20 +1,20 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        Likes
+<div class="modal-header">
+    Likes
+</div>
+<div class="modal-body" ng-show="!likes">
+    <rd-loading></rd-loading>
+</div>
+<div class="modal-body" ng-show="likes && !likes.data.length">
+    No Likes.
+</div>
+<div class="modal-body" ng-show="likes.data.length">
+    <div style="margin: 5px 0" ng-repeat="person in likes.data">
+        <a target="_blank" ng-href="{{'https://facebook.com/' + person.id }}">
+            <img ng-src="{{'https://graph.facebook.com/v2.5/' + person.id + '/picture'}}" alt=""> {{person.name}}
+        </a>
     </div>
-    <div class="panel-body" ng-show="!likes">
-        <rd-loading></rd-loading>
-    </div>
-    <div class="panel-body" ng-show="likes && !likes.data.length">
-        No Likes.
-    </div>
-    <div class="panel-body" ng-show="likes.data.length">
-        <div style="margin: 5px 0" ng-repeat="person in likes.data">
-            <a target="_blank" ng-href="{{'https://facebook.com/' + person.id }}">
-                <img ng-src="{{'https://graph.facebook.com/v2.5/' + person.id + '/picture'}}" alt=""> {{person.name}}
-            </a>
-        </div>
-        <a class="clickable" ng-click="loadMore(likes.paging.next)" ng-if="likes.paging && likes.paging.next">Next</a>
-        <a class="clickable" ng-click="loadMore(likes.paging.previous)" ng-if="likes.paging && likes.paging.previous">Previous</a>
-    </div>
+</div>
+<div class="modal-footer" ng-if="likes.paging && likes.paging.next || likes.paging && likes.paging.previous">
+    <a class="clickable" ng-click="loadMore(likes.paging.next)" ng-if="likes.paging && likes.paging.next">Next</a>
+    <a class="clickable" ng-click="loadMore(likes.paging.previous)" ng-if="likes.paging && likes.paging.previous">Previous</a>
 </div>

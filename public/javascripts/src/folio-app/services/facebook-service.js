@@ -149,6 +149,10 @@
                     {
                         "method": "GET",
                         "relative_url": postId + "/attachments?access_token=" + paToken
+                    },
+                    {
+                        "method": "GET",
+                        "relative_url": postId + "/insights/post_impressions/lifetime?access_token=" + paToken
                     }
                 ];
                 return batchRequest(paToken, batch);

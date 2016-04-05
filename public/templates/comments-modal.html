@@ -1,27 +1,29 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        Comments
-    </div>
-    <div class="panel-body" ng-show="!comments">
+<div class="modal-header">
+    Comments
+</div>
+<div class="modal-body" ng-show="!comments">
     <rd-loading></rd-loading>
 </div>
-    <div class="panel-body" ng-show="comments && !comments.data.length">
-        No Comments.
-    </div>
-    <div class="panel-body" ng-show="comments.data.length">
-        <div class="row" style="margin: 5px 0" ng-repeat="comment in comments.data">
-            <div class="col-xs-3 small">
-                <a target="_blank" ng-href="{{'https://facebook.com/' + comment.from.id }}">
-                    <img width="50px" ng-src="{{'https://graph.facebook.com/v2.5/' + comment.from.id + '/picture'}}"
-                         alt="">
-                    <div> {{comment.from.name}}</div>
-                </a>
-            </div>
-            <div class="col-xs-8">
-                {{comment.message}}
-            </div>
+<div class="modal-body" ng-show="comments && !comments.data.length">
+    No Comments.
+</div>
+<div class="modal-body" ng-show="comments.data.length">
+    <div class="row" style="margin: 5px 0" ng-repeat="comment in comments.data">
+        <div class="col-xs-3 small">
+            <a target="_blank" ng-href="{{'https://facebook.com/' + comment.from.id }}">
+                <img width="50px" ng-src="{{'https://graph.facebook.com/v2.5/' + comment.from.id + '/picture'}}"
+                     alt="">
+                <div> {{comment.from.name}}</div>
+            </a>
         </div>
-        <a class="clickable" ng-click="loadMore(comments.paging.next)" ng-if="comments.paging && comments.paging.next">Next</a>
-        <a class="clickable" ng-click="loadMore(comments.paging.previous)" ng-if="comments.paging && comments.paging.previous">Previous</a>
+        <div class="col-xs-8">
+            {{comment.message}}
+        </div>
     </div>
+</div>
+<div class="modal-footer" ng-if="comments.paging && (comments.paging.previous || comments.paging.next)">
+    <a class="clickable" ng-click="loadMore(comments.paging.next)"
+       ng-if="comments.paging && comments.paging.next">Next</a>
+    <a class="clickable" ng-click="loadMore(comments.paging.previous)"
+       ng-if="comments.paging && comments.paging.previous">Previous</a>
 </div>
