@@ -3,4 +3,5 @@ public/javascripts/components
 dump.rdb
 .env
 public/stylesheets/*.css
+!public/stylesheets/bootstrap-social.css
 .idea

@@ -62,7 +62,7 @@ html(lang="en", ng-app="Folio")
                                         li.dropdown-header= profile.name
                                         li.divider
                                         li.link
-                                            a(href="/logout")
+                                            a(ng-click="logout()")
                                                 | Logout
                             .meta(ng-controller="BreadCrumbCtrl")
                                 .page

@@ -1,7 +1,7 @@
 /* jshint browser: true */
 (function () {
     "use strict";
-    function MasterCtrl($scope, $rootScope, $state, facebookService, $, $cookieStore) {
+    function MasterCtrl($scope, $state, facebookService, $, $cookieStore, FB) {
         var mobileView = 992;
 
         var batch = [];
@@ -55,6 +55,12 @@
             $state.go("page", {page_id: pageId});
         };
 
+        $scope.logout = function () {
+            FB.logout(function () {
+                location.href = "/logout";
+            });
+        };
+
         window.onresize = function () {
             $scope.$apply();
         };
@@ -62,5 +68,5 @@
 
     angular
         .module("Folio")
-        .controller("MasterCtrl", ["$scope", "$rootScope", "$state", "facebookService", "jQueryService", "$cookieStore", MasterCtrl]);
+        .controller("MasterCtrl", ["$scope", "$state", "facebookService", "jQueryService", "$cookieStore", "facebookSDK", MasterCtrl]);
 }());

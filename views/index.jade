@@ -1,43 +1,24 @@
 doctype html
-html
+html(ng-app="Folio")
     head
         title= 'Folio - ' + title
-        link(rel="stylesheet", href="/stylesheets/login.css")
         link(rel="shortcut icon", href="/favicon.ico")
         link(href="https://fonts.googleapis.com/css?family=Volkhov:700italic", rel="stylesheet", type="text/css")
+        link(href="/javascripts/components/bootstrap/dist/css/bootstrap.min.css", rel="stylesheet")
+        link(href="/javascripts/components/font-awesome/css/font-awesome.min.css", rel="stylesheet")
+        link(rel="stylesheet", href="/stylesheets/bootstrap-social.css")
+        link(rel="stylesheet", href="/stylesheets/login.css")
+
+        script(type="text/javascript", src="https://connect.facebook.net/en_US/sdk.js")
         script(type="text/javascript", src="/javascripts/builds/bundle.js")
-    body
-        #appId(style="display:none")=  config && config.appId
-        #fb-root
-        script.
-            (function (d, s, id) {
-                var js, fjs = d.getElementsByTagName(s)[0];
-                if (d.getElementById(id)) return;
-                js = d.createElement(s);
-                js.id = id;
-                js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=" + document.getElementById("appId").innerText;
-                fjs.parentNode.insertBefore(js, fjs);
-            }(document, "script", "facebook-jssdk"));
-
-            window.fbAsyncInit = function () {
-                FB.init({
-                    appId: document.getElementById("appId").innerText,
-                    xfbml: false,
-                    version: "v2.5",
-                    status: true,
-                    cookie: true
-                });
-
-                FB.getLoginStatus(function (response) {
-                    folioFbLogin.statusChangeCallback(response);
-                });
-            };
-
-        h1 Folio
-        p Smart management of Facebook pages.
-        div(class="fb-login-button"
-        data-size="large"
-        data-scope="manage_pages,publish_pages,read_insights"
-        onlogin="folioFbLogin.checkLoginState()").
-            Continue with Facebook
-
+    body(ng-controller="LoginCtrl")
+        .row
+            .col-md-4
+                input(type='hidden', id='appId', name='appId', value=config.appId)
+                h1 Folio
+                p Smart management of Facebook pages.
+        .row
+            .col-sm-3(ng-click="login()")
+                div(class="btn btn-block btn-social btn-lg btn-facebook fb-button")
+                    span(class="fa fa-facebook")
+                    | Continue with Facebook

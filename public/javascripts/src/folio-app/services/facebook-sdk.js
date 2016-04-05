@@ -1,4 +1,5 @@
-(function() {
+(function () {
+    "use strict";
     function facebookSDK($window) {
         $window.FB.init({
             appId: document.getElementById("appId").value,
@@ -7,6 +8,7 @@
         });
         return $window.FB;
     }
+
     angular
         .module("Folio")
         .service("facebookSDK", ["$window", facebookSDK]);
