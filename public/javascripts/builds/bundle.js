@@ -33935,8 +33935,9 @@
 		"./directives/widget-footer.js": 30,
 		"./directives/widget-header.js": 31,
 		"./directives/widget.js": 32,
-		"./filters/util.js": 33,
+		"./filters/filters.js": 36,
 		"./module.js": 5,
+		"./services/facebook-sdk.js": 37,
 		"./services/facebook-service.js": 34,
 		"./services/jquery-service.js": 35
 	};
@@ -34109,7 +34110,7 @@
 	(function () {
 	    "use strict";
 
-	    function InsightsCtrl($scope, $state, $cookieStore, facebookService, $) {
+	    function InsightsCtrl($scope, $rootScope, $state, $cookieStore, facebookService, $, FB) {
 	        var paToken = null;
 	        if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
 	            paToken = $cookieStore.get("pageAccessToken");
@@ -34123,41 +34124,69 @@
 	        $scope.filterInsightsBy = "lifetime";
 	        var objectId = $state.params.post_id ? $state.params.post_id : $state.params.page_id;
 
-	        facebookService.insights(objectId, paToken).then(function (response) {
-	            $scope.insights = response.data;
-	            var data = $scope.insights.data;
-	            $.each(data, function (i, datum) {
-	                var values = datum.values;
-	                if (values.length > 0) {
-	                    var recentValue = values[values.length - 1];
-	                    if (recentValue.value && typeof recentValue.value === "object") {
-	                        delete recentValue.value.total; //removing aggregate data for charts.
-	                        $scope.insights.data[i].keys = Object.keys(recentValue.value);
-	                        var objValues = [];
-	                        var total = 0;
-	                        for (var key in recentValue.value) {
-	                            if (recentValue.value.hasOwnProperty(key)) {
-	                                var val = recentValue.value[key];
-	                                if (!Number.isInteger(val)) {
-	                                    val = 0;
+	        var insights = function() {
+	            facebookService.insights(objectId, paToken).then(function (response) {
+	                $scope.insights = response.data;
+	                var data = $scope.insights.data;
+	                $.each(data, function (i, datum) {
+	                    var values = datum.values;
+	                    if (values.length > 0) {
+	                        var recentValue = values[values.length - 1];
+	                        if (recentValue.value && typeof recentValue.value === "object") {
+	                            delete recentValue.value.total; //removing aggregate data for charts.
+	                            $scope.insights.data[i].keys = Object.keys(recentValue.value);
+	                            var objValues = [];
+	                            var total = 0;
+	                            for (var key in recentValue.value) {
+	                                if (recentValue.value.hasOwnProperty(key)) {
+	                                    var val = recentValue.value[key];
+	                                    if (!Number.isInteger(val)) {
+	                                        val = 0;
+	                                    }
+	                                    objValues.push(val);
+	                                    total += val;
 	                                }
-	                                objValues.push(val);
-	                                total += val;
+	                            }
+	                            //avoiding the case where the chart has all 0s resulting in no chart.
+	                            if (total > 0) {
+	                                $scope.insights.data[i].objValues = objValues;
 	                            }
 	                        }
-	                        //avoiding the case where the chart has all 0s resulting in no chart.
-	                        if (total > 0) {
-	                            $scope.insights.data[i].objValues = objValues;
-	                        }
+	                    }
+	                });
+	            });
+	        };
+
+	        var readInsights = function (attempted) {
+	            facebookService.hasPermission($cookieStore.get("webAccessToken"), "read_insights").then(function (hasPermission) {
+	                if (hasPermission) {
+	                    insights();
+	                } else {
+	                    if (!attempted) {
+	                        FB.login(function () {
+	                            tryReadingInsights(true);
+	                        }, {scope: "read_insights"});
+	                    } else {
+	                        $scope.disableControls = false;
+	                        $scope.insights = [];
+	                        $rootScope.addAlert("Sorry. Cannot read insights without permission.", "danger");
 	                    }
 	                }
 	            });
-	        });
+	        };
+
+	        var tryReadingInsights = function (attempted) {
+	            facebookService.withAccessToken(function () {
+	                readInsights(attempted);
+	            });
+	        };
+
+	        tryReadingInsights(false);
 	    }
 
 	    angular
 	        .module("Folio")
-	        .controller("InsightsCtrl", ["$scope", "$state", "$cookieStore", "facebookService", "jQueryService", InsightsCtrl]);
+	        .controller("InsightsCtrl", ["$scope", "$rootScope", "$state", "$cookieStore", "facebookService", "jQueryService", "facebookSDK", InsightsCtrl]);
 	})();
 
 /***/ },
@@ -34204,7 +34233,7 @@
 	/* jshint browser: true */
 	(function () {
 	    "use strict";
-	    function MasterCtrl($scope, $state, facebookService, $, $cookieStore) {
+	    function MasterCtrl($scope, $rootScope, $state, facebookService, $, $cookieStore) {
 	        var mobileView = 992;
 
 	        var batch = [];
@@ -34265,7 +34294,7 @@
 
 	    angular
 	        .module("Folio")
-	        .controller("MasterCtrl", ["$scope", "$state", "facebookService", "jQueryService", "$cookieStore", MasterCtrl]);
+	        .controller("MasterCtrl", ["$scope", "$rootScope", "$state", "facebookService", "jQueryService", "$cookieStore", MasterCtrl]);
 	}());
 
 
@@ -34276,7 +34305,7 @@
 	(function () {
 	    "use strict";
 
-	    function NewPostCtrl($scope, $rootScope, $state, $cookieStore, facebookService) {
+	    function NewPostCtrl($scope, $rootScope, $state, $cookieStore, facebookService, FB) {
 	        var pageId = $state.params.page_id;
 	        var paToken = null;
 	        if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
@@ -34331,11 +34360,35 @@
 
 	            $scope.disableControls = true;
 	            $rootScope.addAlert("Creating the post, please wait...", "success");
-	            facebookService.post(pageId, paToken, options).then(function (response) {
-	                $scope.disableControls = false;
-	                $scope.post = {unpublish: false};
-	                $rootScope.addAlert("Posted!!!", "success");
-	            });
+
+	            var post = function (attempted) {
+	                facebookService.hasPermission($cookieStore.get("webAccessToken"), "publish_pages").then(function (hasPermissionToPost) {
+	                    if (hasPermissionToPost) {
+	                        facebookService.post(pageId, paToken, options).then(function (response) {
+	                            $scope.disableControls = false;
+	                            $scope.post = {unpublish: false};
+	                            $rootScope.addAlert("Posted!!!", "success");
+	                        });
+	                    } else {
+	                        if (!attempted) {
+	                            FB.login(function () {
+	                                tryPost(true);
+	                            }, {scope: "publish_pages"});
+	                        } else {
+	                            $scope.disableControls = false;
+	                            $rootScope.addAlert("Sorry. Cannot post without permission.", "danger");
+	                        }
+	                    }
+	                });
+	            };
+
+	            var tryPost = function (attempted) {
+	                facebookService.withAccessToken(function () {
+	                    post(attempted);
+	                });
+	            };
+
+	            tryPost(false);
 	        };
 
 	        var getLink = function (message) {
@@ -34345,7 +34398,7 @@
 
 	    angular
 	        .module("Folio")
-	        .controller("NewPostCtrl", ["$scope", "$rootScope", "$state", "$cookieStore", "facebookService", NewPostCtrl]);
+	        .controller("NewPostCtrl", ["$scope", "$rootScope", "$state", "$cookieStore", "facebookService", "facebookSDK", NewPostCtrl]);
 	}());
 
 /***/ },
@@ -34734,41 +34787,7 @@
 
 
 /***/ },
-/* 33 */
-/***/ function(module, exports) {
-
-	(function () {
-
-	    "use strict";
-	    
-	    var isEmpty = function(obj) {
-	        var property;
-	        if (typeof obj !== "object") {
-	            return false;
-	        }
-	        for (property in obj) {
-	            if (obj.hasOwnProperty(property)) {
-	                return false;
-	            }
-	        }
-	        return true;
-	    };
-	    
-	    angular
-	        .module("Folio")
-	        .filter("isEmpty", function () {
-	            return function (obj) {
-	                return isEmpty(obj);
-	            };
-	        })
-	        .filter("isNumber", function () {
-	            return function (obj) {
-	                return Number.isInteger(obj);
-	            };
-	        });
-	}());
-
-/***/ },
+/* 33 */,
 /* 34 */
 /***/ function(module, exports) {
 
@@ -34776,7 +34795,7 @@
 	(function () {
 	    "use strict";
 
-	    function facebookService($http) {
+	    function facebookService($http, $cookieStore) {
 	        var baseUrl = "https://graph.facebook.com/v2.5/", batchRequest;
 	        batchRequest = function (paToken, batch) {
 	            return $http({
@@ -34787,8 +34806,24 @@
 	        };
 
 	        return {
+	            withAccessToken: function(responseFn) {
+	                if(!$cookieStore.get("webAccessToken")) {
+	                    var clientId = document.getElementById("appId").value;
+	                    var code = document.getElementById("fbCode").value;
+	                    var redirectUri = document.getElementById("redirectUri").value;
+	                    return $http({
+	                        method: "GET",
+	                        url: baseUrl + "oauth/access_token?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&code=" + code
+	                    }).then(function(response) {
+	                        $cookieStore.put("webAccessToken", response.data.access_token);
+	                        responseFn();
+	                    });
+	                } else {
+	                    responseFn();
+	                }
+	            },
+	            
 	            post: function (pageId, paToken, options) {
-
 	                var url, fd, type, postInfo = null;
 	                if (options.source) {
 	                    type = (options.source.type.indexOf("image") !== -1) ? "photos" : "videos";
@@ -34829,6 +34864,23 @@
 	                    postInfo.headers = {"Content-Type": undefined};
 	                }
 	                return $http(postInfo);
+	            },
+
+	            hasPermission: function(webAccessToken, permission) {
+	                return $http({
+	                    method: "GET",
+	                    url: baseUrl + "me/permissions?access_token=" + webAccessToken
+	                }).then(function(response) {
+	                    var permissions = response.data.data;
+	                    var hasPermissionToPost = false;
+	                    for (var i = 0; i < permissions.length; i++) {
+	                        if (permissions[i].permission == permission && permissions[i].status == "granted") {
+	                            hasPermissionToPost = true;
+	                            break;
+	                        }
+	                    }
+	                    return hasPermissionToPost;
+	                });
 	            },
 
 	            publishPost: function (postId, paToken) {
@@ -34924,7 +34976,7 @@
 
 	    angular
 	        .module("Folio")
-	        .service("facebookService", ["$http", facebookService]);
+	        .service("facebookService", ["$http", "$cookieStore", facebookService]);
 	}());
 
 
@@ -34944,6 +34996,59 @@
 	        .service("jQueryService", [jQueryService]);
 	}());
 
+
+/***/ },
+/* 36 */
+/***/ function(module, exports) {
+
+	(function () {
+
+	    "use strict";
+	    
+	    var isEmpty = function(obj) {
+	        var property;
+	        if (typeof obj !== "object") {
+	            return false;
+	        }
+	        for (property in obj) {
+	            if (obj.hasOwnProperty(property)) {
+	                return false;
+	            }
+	        }
+	        return true;
+	    };
+	    
+	    angular
+	        .module("Folio")
+	        .filter("isEmpty", function () {
+	            return function (obj) {
+	                return isEmpty(obj);
+	            };
+	        })
+	        .filter("isNumber", function () {
+	            return function (obj) {
+	                return Number.isInteger(obj);
+	            };
+	        });
+	}());
+
+/***/ },
+/* 37 */
+/***/ function(module, exports) {
+
+	(function() {
+	    function facebookSDK($window) {
+	        $window.FB.init({
+	            appId: document.getElementById("appId").value,
+	            xfbml: false, version: "v2.5",
+	            status: true, cookie: true
+	        });
+	        return $window.FB;
+	    }
+	    angular
+	        .module("Folio")
+	        .service("facebookSDK", ["$window", facebookSDK]);
+	})();
 
 /***/ }
 /******/ ]);

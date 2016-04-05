@@ -1,7 +1,7 @@
 /* jshint browser: true */
 (function () {
     "use strict";
-    function MasterCtrl($scope, $state, facebookService, $, $cookieStore) {
+    function MasterCtrl($scope, $rootScope, $state, facebookService, $, $cookieStore) {
         var mobileView = 992;
 
         var batch = [];
@@ -62,5 +62,5 @@
 
     angular
         .module("Folio")
-        .controller("MasterCtrl", ["$scope", "$state", "facebookService", "jQueryService", "$cookieStore", MasterCtrl]);
+        .controller("MasterCtrl", ["$scope", "$rootScope", "$state", "facebookService", "jQueryService", "$cookieStore", MasterCtrl]);
 }());

@@ -17,6 +17,9 @@ html(lang="en", ng-app="Folio")
         script(type="text/javascript", src="https://connect.facebook.net/en_US/sdk.js")
         script(type="text/javascript", src="/javascripts/builds/bundle.js")
     body(ng-controller="MasterCtrl")
+        input(type='hidden', id='appId', name='appId', value=config.appId)
+        input(type='hidden', id='redirectUri', name='redirectUri', value=config.redirectUri)
+        input(type='hidden', id='fbCode', name='fbCode', value=code)
         #page-wrapper(ng-class="{'open': toggle}", ng-cloak="")
             // Sidebar
             #sidebar-wrapper

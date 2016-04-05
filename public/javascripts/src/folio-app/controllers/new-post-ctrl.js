@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    function NewPostCtrl($scope, $rootScope, $state, $cookieStore, facebookService) {
+    function NewPostCtrl($scope, $rootScope, $state, $cookieStore, facebookService, FB) {
         var pageId = $state.params.page_id;
         var paToken = null;
         if (angular.isDefined($cookieStore.get("pageAccessToken"))) {
@@ -56,11 +56,35 @@
 
             $scope.disableControls = true;
             $rootScope.addAlert("Creating the post, please wait...", "success");
-            facebookService.post(pageId, paToken, options).then(function (response) {
-                $scope.disableControls = false;
-                $scope.post = {unpublish: false};
-                $rootScope.addAlert("Posted!!!", "success");
-            });
+
+            var post = function (attempted) {
+                facebookService.hasPermission($cookieStore.get("webAccessToken"), "publish_pages").then(function (hasPermissionToPost) {
+                    if (hasPermissionToPost) {
+                        facebookService.post(pageId, paToken, options).then(function (response) {
+                            $scope.disableControls = false;
+                            $scope.post = {unpublish: false};
+                            $rootScope.addAlert("Posted!!!", "success");
+                        });
+                    } else {
+                        if (!attempted) {
+                            FB.login(function () {
+                                tryPost(true);
+                            }, {scope: "publish_pages"});
+                        } else {
+                            $scope.disableControls = false;
+                            $rootScope.addAlert("Sorry. Cannot post without permission.", "danger");
+                        }
+                    }
+                });
+            };
+
+            var tryPost = function (attempted) {
+                facebookService.withAccessToken(function () {
+                    post(attempted);
+                });
+            };
+
+            tryPost(false);
         };
 
         var getLink = function (message) {
@@ -70,5 +94,5 @@
 
     angular
         .module("Folio")
-        .controller("NewPostCtrl", ["$scope", "$rootScope", "$state", "$cookieStore", "facebookService", NewPostCtrl]);
+        .controller("NewPostCtrl", ["$scope", "$rootScope", "$state", "$cookieStore", "facebookService", "facebookSDK", NewPostCtrl]);
 }());

@@ -1,6 +1,12 @@
-extends layout
-
-block content
-  h1= message
-  h2= error.status
-  pre #{error.stack}
+doctype html
+html
+    head
+        title= 'Folio - Error'
+        link(rel="stylesheet", href="/stylesheets/login.css")
+        link(rel="shortcut icon", href="/favicon.ico")
+        link(href="https://fonts.googleapis.com/css?family=Volkhov:700italic", rel="stylesheet", type="text/css")
+        script(type="text/javascript", src="/javascripts/builds/bundle.js")
+    body
+        h1= message
+        h2= error.status
+        pre #{error.stack}
