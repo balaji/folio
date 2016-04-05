@@ -1,11 +1,18 @@
 (function () {
     "use strict";
 
-    function LoginCtrl($scope, FB, Util) {
+    function LoginCtrl($scope, facebookService, FB, Util) {
 
         function checkStatusChange(response) {
+            console.log(response);
             if (response.status === "connected") {
-                Util.post("/", {token: response.authResponse.accessToken});
+                facebookService.hasPermission(response.authResponse.accessToken, "manage_pages").then(function (hasPermission) {
+                   if(hasPermission) {
+                       Util.post("/", {token: response.authResponse.accessToken});
+                   } else {
+                       alert("Access to managing pages is vital for using this app");
+                   }
+                });
             }
         }
 
@@ -14,7 +21,6 @@
         });
 
         $scope.login = function () {
-            console.log("FFS");
             FB.login(function (response) {
                 checkStatusChange(response);
             }, {scope: "manage_pages,publish_pages,read_insights"});
@@ -23,5 +29,5 @@
 
     angular
         .module("Folio")
-        .controller("LoginCtrl", ["$scope", "facebookSDK", "Util", LoginCtrl]);
+        .controller("LoginCtrl", ["$scope", "facebookService", "facebookSDK", "Util", LoginCtrl]);
 })();

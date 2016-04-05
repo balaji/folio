@@ -34143,11 +34143,18 @@
 	(function () {
 	    "use strict";
 
-	    function LoginCtrl($scope, FB, Util) {
+	    function LoginCtrl($scope, facebookService, FB, Util) {
 
 	        function checkStatusChange(response) {
+	            console.log(response);
 	            if (response.status === "connected") {
-	                Util.post("/", {token: response.authResponse.accessToken});
+	                facebookService.hasPermission(response.authResponse.accessToken, "manage_pages").then(function (hasPermission) {
+	                   if(hasPermission) {
+	                       Util.post("/", {token: response.authResponse.accessToken});
+	                   } else {
+	                       alert("Access to managing pages is vital for using this app");
+	                   }
+	                });
 	            }
 	        }
 
@@ -34156,7 +34163,6 @@
 	        });
 
 	        $scope.login = function () {
-	            console.log("FFS");
 	            FB.login(function (response) {
 	                checkStatusChange(response);
 	            }, {scope: "manage_pages,publish_pages,read_insights"});
@@ -34165,7 +34171,7 @@
 
 	    angular
 	        .module("Folio")
-	        .controller("LoginCtrl", ["$scope", "facebookSDK", "Util", LoginCtrl]);
+	        .controller("LoginCtrl", ["$scope", "facebookService", "facebookSDK", "Util", LoginCtrl]);
 	})();
 
 /***/ },
@@ -34799,24 +34805,34 @@
 
 	    function facebookService($http, $cookieStore) {
 	        var baseUrl = "https://graph.facebook.com/v2.5/", batchRequest;
+
+	        var errorFn = function (error) {
+	            console.log(error);
+	            location.href = "/logout";
+	        };
+
+	        var successFn = function (response) {
+	            return response;
+	        };
+
 	        batchRequest = function (paToken, batch) {
 	            return $http({
 	                method: "POST",
 	                url: baseUrl,
 	                data: {"batch": batch, "access_token": paToken}
-	            });
+	            }).then(successFn, errorFn);
 	        };
 
 	        return {
-	            withAccessToken: function(responseFn) {
-	                if(!$cookieStore.get("webAccessToken")) {
+	            withAccessToken: function (responseFn) {
+	                if (!$cookieStore.get("webAccessToken")) {
 	                    var clientId = document.getElementById("appId").value;
 	                    var code = document.getElementById("fbCode").value;
 	                    var redirectUri = document.getElementById("redirectUri").value;
 	                    return $http({
 	                        method: "GET",
 	                        url: baseUrl + "oauth/access_token?client_id=" + clientId + "&redirect_uri=" + redirectUri + "&code=" + code
-	                    }).then(function(response) {
+	                    }).then(function (response) {
 	                        $cookieStore.put("webAccessToken", response.data.access_token);
 	                        responseFn();
 	                    });
@@ -34824,7 +34840,7 @@
 	                    responseFn();
 	                }
 	            },
-	            
+
 	            post: function (pageId, paToken, options) {
 	                var url, fd, type, postInfo = null;
 	                if (options.source) {
@@ -34865,14 +34881,14 @@
 	                    postInfo.data = fd;
 	                    postInfo.headers = {"Content-Type": undefined};
 	                }
-	                return $http(postInfo);
+	                return $http(postInfo).then(successFn, errorFn);
 	            },
 
-	            hasPermission: function(webAccessToken, permission) {
+	            hasPermission: function (webAccessToken, permission) {
 	                return $http({
 	                    method: "GET",
 	                    url: baseUrl + "me/permissions?access_token=" + webAccessToken
-	                }).then(function(response) {
+	                }).then(function (response) {
 	                    var permissions = response.data.data;
 	                    var hasPermissionToPost = false;
 	                    for (var i = 0; i < permissions.length; i++) {
@@ -34889,32 +34905,32 @@
 	                return $http({
 	                    method: "POST",
 	                    url: baseUrl + postId + "?is_published=true&access_token=" + paToken
-	                });
+	                }).then(successFn, errorFn);
 	            },
 
 	            deletePost: function (postId, paToken) {
 	                return $http({
 	                    method: "DELETE",
 	                    url: baseUrl + postId + "?access_token=" + paToken
-	                });
+	                }).then(successFn, errorFn);
 	            },
 
 	            batchRequest: function (paToken, batch) {
 	                return batchRequest(paToken, batch);
 	            },
-	            
-	            getLikes: function(postId, paToken) {
+
+	            getLikes: function (postId, paToken) {
 	                return $http({
 	                    method: "GET",
 	                    url: baseUrl + postId + "/likes?access_token=" + paToken
-	                });
+	                }).then(successFn, errorFn);
 	            },
 
-	            getPostComments: function(postId, paToken) {
+	            getPostComments: function (postId, paToken) {
 	                return $http({
 	                    method: "GET",
 	                    url: baseUrl + postId + "/comments?access_token=" + paToken
-	                });
+	                }).then(successFn, errorFn);
 	            },
 
 	            getPostDetails: function (postId, paToken) {
@@ -34950,9 +34966,10 @@
 	                        "relative_url": pageId + "/albums?access_token=" + paToken
 	                    }
 	                ];
+
 	                return batchRequest(paToken, batch);
 	            },
-	            
+
 	            getAllPosts: function (pageId, paToken) {
 	                var batch = [
 	                    {
@@ -34971,7 +34988,7 @@
 	                return $http({
 	                    method: "GET",
 	                    url: baseUrl + objectId + "/insights?access_token=" + paToken
-	                });
+	                }).then(successFn, errorFn);
 	            }
 	        };
 	    }

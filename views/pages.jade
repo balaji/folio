@@ -42,7 +42,8 @@ html(lang="en", ng-app="Folio")
                             data-page-token=page.access_token,
                             title=page.name,
                             class="clickable")= trimLeading(page.name, 17)
-                                span.menu-icon.fa.fa-align-justify
+                                span.menu-icon
+                                    img(src="https://graph.facebook.com/v2.5/" + page.id +"/picture", alt="", width="28")
                 .sidebar-footer
                     .col-xs-6
                         a(href="#", target="_blank")
