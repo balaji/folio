@@ -4,9 +4,11 @@
     function BreadCrumbCtrl($scope, $rootScope, $) {
         $rootScope.$on("$stateChangeStart", function (event, toState, toParams) {
             
-            $scope.crumbs = [{name: "Folio", link: "#/"}];
+            $scope.crumbs = [{name: "Dashboard", link: "#/"}];
             $("li.sidebar-list").removeClass("active");
+            var pageId = toParams.page_id;
 
+            var sideBarLink = $("a[data-page-id='" + pageId + "']");
             switch (toState.name) {
                 case "edit_post":
                 case "new_post":
@@ -14,18 +16,18 @@
                 case "page_insights":
                 case "post_insights":
                     $scope.crumbs.push({
-                        name: document.getElementById(toParams.page_id).value,
-                        link: "#/" + toParams.page_id
+                        name: document.getElementById(pageId).value,
+                        link: "#/" + pageId
                     });
+                    sideBarLink.parent().addClass("active");
             }
 
             switch (toState.name) {
                 case "page":
-                    var pageId = toParams.page_id;
                     $scope.crumbs.push({
                         name: document.getElementById(pageId).value
                     });
-                    $("a[data-page-id='" + pageId + "']").parent().addClass("active");
+                    sideBarLink.parent().addClass("active");
                     break;
 
                 case "edit_post":
@@ -49,7 +51,7 @@
                 case "page_insights":
                     $scope.crumbs.push({
                         name: "Page Details",
-                        link: "#/" + toParams.page_id + "/settings"
+                        link: "#/" + pageId + "/settings"
                     });
                     $scope.crumbs.push({
                         name: "Insights"
@@ -59,7 +61,7 @@
                 case "post_insights":
                     $scope.crumbs.push({
                         name: "Post Details",
-                        link: "#/" + toParams.page_id + "/post/" + toParams.post_id
+                        link: "#/" + pageId + "/post/" + toParams.post_id
                     });
                     $scope.crumbs.push({
                         name: "Insights"
@@ -67,7 +69,7 @@
                     break;
 
                 default:
-                    $scope.crumbs = [{name: "Folio"}];
+                    $scope.crumbs = [{name: "Dashboard"}];
                     $("#dashboard-item").addClass("active");
             }
         });
