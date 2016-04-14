@@ -14,9 +14,21 @@ Experimental node.js app for managing Facebook pages.
 * npm
 * redis-server
 
+## Important
+If you are running this build locally, 
+* you need to create a facebook app here: [https://developers.facebook.com/apps/](https://developers.facebook.com/apps) and edit the appId [here](https://github.com/balaji/folio/tree/master/config).
+
+* Create a `.env` file with APP_SECRET and REDIS_URL on the root folder, like this:
+```
+APP_SECRET=app_secret_from_facebook_app
+REDIS_URL=redis://localhost:6379
+```
+
+Alternatively you can try the latest build here: [https://folioweb.herokuapp.com/](https://folioweb.herokuapp.com/).
+
 ## Steps:
 
-The redis server instance should be running on localhost.
+The redis server instance should be running.
 ```
 $ npm install
 $ ./node_modules/.bin/bower install
